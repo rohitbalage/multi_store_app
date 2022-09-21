@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_store_app/main_screens/category.dart';
 import 'package:multi_store_app/main_screens/home.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -12,10 +13,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   int _selectedIndex = 0;
   final List<Widget> _tabs = const [
     HomeScreen(),
-    Center(child: Text('category screen'),),
-    Center(child: Text('stores screen'),),
-    Center(child: Text('cart screen'),),
-    Center(child: Text('profile screen'),),
+    CategoryScreen(),
+    Center(
+      child: Text('stores screen'),
+    ),
+    Center(
+      child: Text('cart screen'),
+    ),
+    Center(
+      child: Text('profile screen'),
+    ),
   ];
   @override
   Widget build(BuildContext context) {
@@ -23,27 +30,37 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       body: _tabs[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedItemColor:Colors.black,
+        selectedItemColor: Colors.black,
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
-        currentIndex:_selectedIndex,
-        items: [BottomNavigationBarItem(icon:Icon(Icons.home), label: 'Home',),
-          BottomNavigationBarItem(icon:Icon(Icons.search), label: 'Category',),
-          BottomNavigationBarItem(icon:Icon(Icons.shop), label: 'Stores',),
-          BottomNavigationBarItem(icon:Icon(Icons.shopping_cart), label: 'Cart',),
-          BottomNavigationBarItem(icon:Icon(Icons.person), label: 'Profile',),
-
+        currentIndex: _selectedIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Category',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shop),
+            label: 'Stores',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
-        onTap:(index)
-        {
+        onTap: (index) {
           setState(() {
-            _selectedIndex=index;
+            _selectedIndex = index;
           });
-
-        } ,
+        },
       ),
-
-
-
     );
   }
 }

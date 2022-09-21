@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/minor_screens/search.dart';
 
+import '../widgets/fake_search.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,52 +20,11 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.white,
-          title: InkWell(
-            onTap: ()
-            
-            {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> const SearchScreen()));
-            },
-            child: Container(
-              height: 35,
-              decoration: BoxDecoration(border: Border.all(color:Colors.yellow, width: 1.4, ), borderRadius: BorderRadius.circular(25) ),
-              child:Row (
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-
-                  Row(
-                    children: const [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Icon(Icons.search, color: Colors.grey,),
-                      ),
-
-                      Text('What are you looking for?',
-                        style: TextStyle(fontSize: 18, color: Colors.grey ),),
-                    ],
-                  ),
-
-                  Container(
-                    height: 32,
-                    width: 75,
-                    decoration: BoxDecoration(color: Colors.yellow,
-             borderRadius: BorderRadius.circular(25)),
-                  child: const Center(
-                    child: Text('Search',
-                      style: TextStyle(fontSize: 16, color: Colors.grey ),),
-                  ),
-                  )
-                ],
-
-              ) ,
-
-
-            ),
-          ),
+          title: FakeSearch(),
           bottom: const TabBar(
-            isScrollable:true ,
+            isScrollable: true,
             indicatorColor: Colors.yellow,
-            indicatorWeight:8 ,
+            indicatorWeight: 8,
             tabs: [
               RepeatedTab(
                 label: 'Men',
@@ -110,16 +70,20 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text('bag screen'),
           ),
           Center(
-            child: Text('electronics screen'),),
-      Center(
-          child: Text('accessories screen'),),
+            child: Text('electronics screen'),
+          ),
           Center(
-            child: Text('home and garden screen'),),
+            child: Text('accessories screen'),
+          ),
           Center(
-            child: Text('kids screen'),),
+            child: Text('home and garden screen'),
+          ),
           Center(
-            child: Text('beauty screen'),),
-
+            child: Text('kids screen'),
+          ),
+          Center(
+            child: Text('beauty screen'),
+          ),
         ]),
       ),
     );
