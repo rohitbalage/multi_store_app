@@ -63,6 +63,7 @@ flutter:
   assets:
     - images/accessories/
     - images/bags/
+    - images/try/ 
     - images/beauty/
     - images/electronics/
     - images/homegarden/
