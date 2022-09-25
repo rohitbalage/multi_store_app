@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/appbar_widgets.dart';
+
 class SubCategProducts extends StatelessWidget {
   final String subCategName;
   final String mainCategName;
