@@ -22,14 +22,9 @@ class SiderBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const Text(
-                  '<<',
-                  style: TextStyle(
-                      color: Colors.brown,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 10),
-                ),
+                mainCategName == 'beauty'
+                    ? const Text('')
+                    : const Text('<<', style: style),
                 Text(
                   mainCategName.toUpperCase(),
                   style: const TextStyle(
@@ -38,14 +33,9 @@ class SiderBar extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       letterSpacing: 10),
                 ),
-                const Text(
-                  '>>',
-                  style: TextStyle(
-                      color: Colors.brown,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 10),
-                ),
+                mainCategName == 'men'
+                    ? const Text('')
+                    : const Text('>>', style: style),
               ],
             ),
           ),
@@ -54,6 +44,12 @@ class SiderBar extends StatelessWidget {
     );
   }
 }
+
+const style = TextStyle(
+    color: Colors.brown,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 10);
 
 class SubCategModel extends StatelessWidget {
   final String mainCategName;
@@ -86,7 +82,10 @@ class SubCategModel extends StatelessWidget {
             width: 70,
             child: Image(image: AssetImage(assetName)),
           ),
-          Text(subcategLabel)
+          Text(
+            subcategLabel,
+            style: TextStyle(fontSize: 11),
+          )
         ],
       ),
     );
