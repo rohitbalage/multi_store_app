@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/main_screens/category.dart';
+import 'package:multi_store_app/main_screens/dashboard.dart';
 import 'package:multi_store_app/main_screens/home.dart';
 import 'package:multi_store_app/main_screens/stores.dart';
 
@@ -7,7 +8,7 @@ class SupplierHomeScren extends StatefulWidget {
   const SupplierHomeScren({Key? key}) : super(key: key);
 
   @override
-  State<SupplierHomeScren> createState() => _CustomerHomeScreenState();
+  State<SupplierHomeScren> createState() => _SupplierHomeScreenState();
 }
 
 class _SupplierHomeScreenState extends State<SupplierHomeScren> {
@@ -16,9 +17,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScren> {
     HomeScreen(),
     CategoryScreen(),
     StoresScreen(),
-    Center(
-      child: Text('Dashboard'),
-    ),
+    DashboardScreen(),
     Center(
       child: Text('upload'),
     )
