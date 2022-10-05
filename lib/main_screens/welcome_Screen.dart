@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:multi_store_app/main_screens/supplier_home.dart';
 import '../widgets/yellowbuttion.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -136,7 +137,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                   YellowButton(
                                     width: 0.25,
                                     label: 'Log In',
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/Supplier_home');
+                                    },
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8),
@@ -171,7 +175,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         child: YellowButton(
                           width: 0.25,
                           label: 'Log In',
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, '/Customer_home');
+                          },
                         ),
                       ),
                       YellowButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_store_app/main_screens/customer_home.dart';
 import 'package:multi_store_app/main_screens/supplier_home.dart';
 import 'package:multi_store_app/main_screens/welcome_Screen.dart';
 
@@ -12,10 +13,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Multi Store App',
-      home: WelcomeScreen(),
+      // home: WelcomeScreen(),
+
+      initialRoute: '/Welcome_screen',
+      routes: {
+        '/Welcome_screen': (context) => const WelcomeScreen(),
+        '/Customer_home': (context) => const CustomerHomeScreen(),
+        '/Supplier_home': (context) => const SupplierHomeScren(),
+      },
     );
   }
 }
