@@ -2,3 +2,5 @@
 
 It is an project an ecommerce application. It has customer profile and store profile. made with flutter
 
+# (10/04) this is a merge for UI design with main branch
+
