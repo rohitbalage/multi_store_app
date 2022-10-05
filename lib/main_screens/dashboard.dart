@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:multi_store_app/dashboard_components/edit_business.dart';
+import 'package:multi_store_app/dashboard_components/manage_products.dart';
 import 'package:multi_store_app/dashboard_components/my_store.dart';
+import 'package:multi_store_app/dashboard_components/supp_balance.dart';
+import 'package:multi_store_app/dashboard_components/supp_orders.dart';
+import 'package:multi_store_app/dashboard_components/supp_statics.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 
 List<IconData> icons = [
@@ -18,6 +23,15 @@ List<String> labels = [
   'manage product',
   'balance',
   'statics',
+];
+
+List<Widget> pages = const [
+  MyStore(),
+  SupplierOrder(),
+  EditBusiness(),
+  ManageProducts(),
+  BalanceScreen(),
+  StaticsScreen(),
 ];
 
 class DashboardScreen extends StatelessWidget {
@@ -50,7 +64,7 @@ class DashboardScreen extends StatelessWidget {
             return InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const MyStore()));
+                    MaterialPageRoute(builder: (context) => pages[index]));
               },
               child: Card(
                 elevation: 20,

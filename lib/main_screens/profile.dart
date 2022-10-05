@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:multi_store_app/Customer_screens/customer_orders.dart';
+import 'package:multi_store_app/Customer_screens/whislist.dart';
+import 'package:multi_store_app/main_screens/cart.dart';
+import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -84,7 +88,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 TextStyle(color: Colors.yellow, fontSize: 20),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const CartScreen(
+                                        back: AppBarBackButton(),
+                                      )));
+                        },
                       ),
                     ),
                     Container(
@@ -97,7 +108,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 TextStyle(color: Colors.black54, fontSize: 20),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CustomerOrders()));
+                        },
                       ),
                     ),
                     Container(
@@ -115,7 +132,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 TextStyle(color: Colors.yellow, fontSize: 20),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Whishlist()));
+                        },
                       ),
                     ),
                   ]),
