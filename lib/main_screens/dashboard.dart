@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_store_app/dashboard_components/my_store.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 
 List<IconData> icons = [
@@ -46,28 +47,34 @@ class DashboardScreen extends StatelessWidget {
           crossAxisSpacing: 50,
           crossAxisCount: 2,
           children: List.generate(6, (index) {
-            return Card(
-              elevation: 20,
-              shadowColor: Colors.purple.shade200,
-              color: Colors.blueGrey.withOpacity(0.7),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Icon(
-                    icons[index],
-                    size: 50,
-                    color: Colors.yellowAccent,
-                  ),
-                  Text(
-                    labels[index].toUpperCase(),
-                    style: const TextStyle(
-                        fontSize: 24,
-                        letterSpacing: 2,
-                        color: Colors.yellowAccent,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Acme'),
-                  )
-                ],
+            return InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const MyStore()));
+              },
+              child: Card(
+                elevation: 20,
+                shadowColor: Colors.purple.shade200,
+                color: Colors.blueGrey.withOpacity(0.7),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Icon(
+                      icons[index],
+                      size: 50,
+                      color: Colors.yellowAccent,
+                    ),
+                    Text(
+                      labels[index].toUpperCase(),
+                      style: const TextStyle(
+                          fontSize: 24,
+                          letterSpacing: 2,
+                          color: Colors.yellowAccent,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Acme'),
+                    )
+                  ],
+                ),
               ),
             );
           }),
