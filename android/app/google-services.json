@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "713181138031",
+    "project_id": "salesease-bf7ef",
+    "storage_bucket": "salesease-bf7ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713181138031:android:20719e5ad47463ae2a919a",
+        "android_client_info": {
+          "package_name": "com.rrbofficial.multi_store_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713181138031-a9enhncrdq8u36oinha434hhhqf50ibv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rrbofficial.multi_store_app",
+            "certificate_hash": "b14d691c35203acb53501f216a3b0af68fb64041"
+          }
+        },
+        {
+          "client_id": "713181138031-rrt6m7ptgp00rjgsfcm56v3ttgcqkiri.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL6UQeKsKgsP8unHJflKt7KqWYxcjN5ws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713181138031-rrt6m7ptgp00rjgsfcm56v3ttgcqkiri.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

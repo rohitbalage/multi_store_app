@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/main_screens/supplier_home.dart';
 import '../widgets/yellowbuttion.dart';
@@ -25,6 +26,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  bool processing = false;
 
   @override
   void initState() {
@@ -213,14 +215,25 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             child: const Image(
                                 image: AssetImage('images/inapp/facebook.jpg')),
                           ),
-                          GoogleFacebookLogIn(
-                              label: 'Guest',
-                              onPressed: () {},
-                              child: Icon(
-                                Icons.person,
-                                size: 55,
-                                color: Colors.lightBlueAccent,
-                              ))
+                          processing == true
+                              ? const CircularProgressIndicator()
+                              : GoogleFacebookLogIn(
+                                  label: 'Guest',
+                                  onPressed: () async {
+                                    setState(() {
+                                      processing = true;
+                                    });
+
+                                    await FirebaseAuth.instance
+                                        .signInAnonymously();
+                                    Navigator.pushReplacementNamed(
+                                        context, '/Customer_home');
+                                  },
+                                  child: const Icon(
+                                    Icons.person,
+                                    size: 55,
+                                    color: Colors.lightBlueAccent,
+                                  ))
                         ]),
                   ),
                 )

@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/Customer_screens/customer_orders.dart';
 import 'package:multi_store_app/Customer_screens/whislist.dart';
 import 'package:multi_store_app/main_screens/cart.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
+
+import '../widgets/alert_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -204,9 +208,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       RepeatedListTile(
                         title: 'Log Out',
                         icon: Icons.logout,
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, '/Welcome_screen');
+                        onPressed: () async {
+                          MyAlertDialog.showMyDialog(
+                            context: context,
+                            content: 'Are you sure you want to log out?',
+                            title: 'log out',
+                            tabNo: () {
+                              Navigator.pop(context);
+                            },
+                            tabYes: () async {
+                              await FirebaseAuth.instance.signOut();
+                              Navigator.pop(context);
+                              Navigator.pushReplacementNamed(
+                                  context, '/Welcome_screen');
+                            },
+                          );
                         },
                       ),
                     ]),
@@ -220,6 +236,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ]));
   }
 }
+
+class AppBackButtn {}
 
 class YellowDivider extends StatelessWidget {
   const YellowDivider({
