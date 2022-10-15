@@ -1,11 +1,12 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/auth_widgets.dart';
 import '../widgets/snackBar.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_Storage;
 
 class CustomerRegister extends StatefulWidget {
   const CustomerRegister({super.key});
@@ -18,6 +19,9 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   late String name;
   late String email;
   late String password;
+  late String profileImage;
+  late String _uid;
+  bool processing = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -27,6 +31,9 @@ class _CustomerRegisterState extends State<CustomerRegister> {
 
   XFile? _imageFile;
   dynamic _pickedImageError;
+
+  CollectionReference customers =
+      FirebaseFirestore.instance.collection('customers');
 
   void _pickImageFromCamera() async {
     try {
@@ -47,30 +54,64 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   }
 
   void signUp() async {
+    setState(() {
+      processing = true;
+    });
     if (_formKey.currentState!.validate()) {
       if (_imageFile != null) {
         try {
           await FirebaseAuth.instance
               .createUserWithEmailAndPassword(email: email, password: password);
+
+          firebase_Storage.Reference ref = firebase_Storage
+              .FirebaseStorage.instance
+              .ref('cust-images/$email.jpg');
+
+          await ref.putFile(File(_imageFile!.path));
+          _uid = FirebaseAuth.instance.currentUser!.uid;
+
+          profileImage = await ref.getDownloadURL();
+          await customers.doc().set({
+            'name': name,
+            'email': email,
+            'profileimage': profileImage,
+            'phone': '',
+            'address': '',
+            'cid': _uid,
+          });
+
           _formKey.currentState!.reset();
           setState(() {
             _imageFile = null;
           });
+
           Navigator.pushReplacementNamed(context, '/Customer_home');
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
+            setState(() {
+              processing = false;
+            });
             myMesssageHandler.showSnackbar(
                 _scaffoldKey, 'that is a weak password');
           } else if (e.code == 'email-already-in-use') {
+            setState(() {
+              processing = false;
+            });
             myMesssageHandler.showSnackbar(
                 _scaffoldKey, 'that email is already used by another user');
           }
         }
       } else {
+        setState(() {
+          processing = false;
+        });
         myMesssageHandler.showSnackbar(
             _scaffoldKey, 'Please pick up image first');
       }
     } else {
+      setState(() {
+        processing = false;
+      });
       myMesssageHandler.showSnackbar(_scaffoldKey, 'Please fill all fields');
     }
   }
@@ -238,12 +279,14 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                         actionLabel: 'log In',
                         onPressed: () {},
                       ),
-                      AuthMainButton(
-                        mainButtonLabel: 'Sign Up',
-                        onPressed: () async {
-                          signUp();
-                        },
-                      )
+                      processing == true
+                          ? const CircularProgressIndicator()
+                          : AuthMainButton(
+                              mainButtonLabel: 'Sign Up',
+                              onPressed: () async {
+                                signUp();
+                              },
+                            )
                     ],
                   ),
                 ),
