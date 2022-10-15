@@ -1,10 +1,11 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/auth_widgets.dart';
 import '../widgets/snackBar.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class CustomerRegister extends StatefulWidget {
   const CustomerRegister({super.key});
@@ -42,6 +43,35 @@ class _CustomerRegisterState extends State<CustomerRegister> {
         _pickedImageError = e;
       });
       print(_pickedImageError);
+    }
+  }
+
+  void signUp() async {
+    if (_formKey.currentState!.validate()) {
+      if (_imageFile != null) {
+        try {
+          await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(email: email, password: password);
+          _formKey.currentState!.reset();
+          setState(() {
+            _imageFile = null;
+          });
+          Navigator.pushReplacementNamed(context, '/Customer_home');
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'weak-password') {
+            myMesssageHandler.showSnackbar(
+                _scaffoldKey, 'that is a weak password');
+          } else if (e.code == 'email-already-in-use') {
+            myMesssageHandler.showSnackbar(
+                _scaffoldKey, 'that email is already used by another user');
+          }
+        }
+      } else {
+        myMesssageHandler.showSnackbar(
+            _scaffoldKey, 'Please pick up image first');
+      }
+    } else {
+      myMesssageHandler.showSnackbar(_scaffoldKey, 'Please fill all fields');
     }
   }
 
@@ -147,7 +177,6 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                             },
                             onChanged: (Value) {
                               name = Value;
-                              print(name);
                             },
                             // controller: _nameController,
                             decoration: textFormDecoration.copyWith(
@@ -169,7 +198,6 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                             },
                             onChanged: (Value) {
                               email = Value;
-                              print(email);
                             },
                             keyboardType: TextInputType.emailAddress,
                             decoration: textFormDecoration.copyWith(
@@ -181,7 +209,6 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                           child: TextFormField(
                             onChanged: (Value) {
                               password = Value;
-                              print(password);
                             },
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -213,26 +240,8 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                       ),
                       AuthMainButton(
                         mainButtonLabel: 'Sign Up',
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            if (_imageFile != null) {
-                              print('image picked');
-                              print('valid');
-                              print(name);
-                              print(email);
-                              print(password);
-                              _formKey.currentState!.reset();
-                              setState(() {
-                                _imageFile = null;
-                              });
-                            } else {
-                              myMesssageHandler.showSnackbar(
-                                  _scaffoldKey, 'Please pick up image first');
-                            }
-                          } else {
-                            myMesssageHandler.showSnackbar(
-                                _scaffoldKey, 'Please fill all fields');
-                          }
+                        onPressed: () async {
+                          signUp();
                         },
                       )
                     ],
