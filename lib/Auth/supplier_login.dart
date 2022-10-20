@@ -5,14 +5,14 @@ import '../widgets/auth_widgets.dart';
 import '../widgets/snackBar.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CustomerLogin extends StatefulWidget {
-  const CustomerLogin({super.key});
+class SupplierLogin extends StatefulWidget {
+  const SupplierLogin({super.key});
 
   @override
-  _CustomerLoginState createState() => _CustomerLoginState();
+  _SupplierLoginState createState() => _SupplierLoginState();
 }
 
-class _CustomerLoginState extends State<CustomerLogin> {
+class _SupplierLoginState extends State<SupplierLogin> {
   late String email;
   late String password;
 
@@ -34,9 +34,8 @@ class _CustomerLoginState extends State<CustomerLogin> {
             .signInWithEmailAndPassword(email: email, password: password);
 
         _formKey.currentState!.reset();
-        print("The uid is\n");
-        print(FirebaseAuth.instance.currentUser!.uid);
-        Navigator.pushReplacementNamed(context, '/customer_home');
+
+        Navigator.pushReplacementNamed(context, '/supplier_home');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           setState(() {
@@ -98,36 +97,34 @@ class _CustomerLoginState extends State<CustomerLogin> {
                                 hintText: 'Enter your email'),
                           )),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: TextFormField(
-                          onChanged: (Value) {
-                            password = Value;
-                          },
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'please enter your password';
-                            }
-                            return null;
-                          },
-                          obscureText: passwordVisible,
-                          decoration: textFormDecoration.copyWith(
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    passwordVisible = !passwordVisible;
-                                  });
-                                },
-                                icon: Icon(
-                                  passwordVisible
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Colors.purple,
-                                )),
-                            labelText: 'Password',
-                            hintText: 'Enter your password',
-                          ),
-                        ),
-                      ),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: TextFormField(
+                            onChanged: (Value) {
+                              password = Value;
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'please enter your password';
+                              }
+                              return null;
+                            },
+                            obscureText: passwordVisible,
+                            decoration: textFormDecoration.copyWith(
+                                labelText: 'Password',
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        passwordVisible = !passwordVisible;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      passwordVisible
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: Colors.purple,
+                                    )),
+                                hintText: 'Enter your password'),
+                          )),
                       TextButton(
                           onPressed: () {},
                           child: const Text(
@@ -140,7 +137,7 @@ class _CustomerLoginState extends State<CustomerLogin> {
                         actionLabel: 'Sign up',
                         onPressed: () {
                           Navigator.pushReplacementNamed(
-                              context, '/customer_signup');
+                              context, '/supplier_signup');
                         },
                       ),
                       processing == true

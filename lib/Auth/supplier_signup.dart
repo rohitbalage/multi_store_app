@@ -7,18 +7,18 @@ import '../widgets/snackBar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_Storage;
 
-class CustomerRegister extends StatefulWidget {
-  const CustomerRegister({super.key});
+class SupplierRegister extends StatefulWidget {
+  const SupplierRegister({super.key});
 
   @override
-  _CustomerRegisterState createState() => _CustomerRegisterState();
+  _SupplierRegisterState createState() => _SupplierRegisterState();
 }
 
-class _CustomerRegisterState extends State<CustomerRegister> {
-  late String name;
+class _SupplierRegisterState extends State<SupplierRegister> {
+  late String storeName;
   late String email;
   late String password;
-  late String profileImage;
+  late String storeLogo;
   late String _uid;
   bool processing = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -31,8 +31,8 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   XFile? _imageFile;
   dynamic _pickedImageError;
 
-  CollectionReference customers =
-      FirebaseFirestore.instance.collection('customers');
+  CollectionReference suppliers =
+      FirebaseFirestore.instance.collection('suppliers');
 
   void _pickImageFromCamera() async {
     try {
@@ -69,14 +69,14 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           await ref.putFile(File(_imageFile!.path));
           _uid = FirebaseAuth.instance.currentUser!.uid;
 
-          profileImage = await ref.getDownloadURL();
-          await customers.doc(_uid).set({
-            'name': name,
+          storeLogo = await ref.getDownloadURL();
+          await suppliers.doc(_uid).set({
+            'storename': storeName,
             'email': email,
-            'profileimage': profileImage,
+            'storelogo': storeLogo,
             'phone': '',
-            'address': '',
-            'cid': _uid,
+            'sid': _uid,
+            'coverimage': '',
           });
 
           _formKey.currentState!.reset();
@@ -84,7 +84,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
             _imageFile = null;
           });
 
-          Navigator.pushReplacementNamed(context, '/customer_login');
+          Navigator.pushReplacementNamed(context, '/supplier_login');
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             setState(() {
@@ -211,17 +211,17 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                           child: TextFormField(
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please enter your full name';
+                                return 'Please enter your store name';
                               }
                               return null;
                             },
                             onChanged: (Value) {
-                              name = Value;
+                              storeName = Value;
                             },
                             // controller: _nameController,
                             decoration: textFormDecoration.copyWith(
-                                labelText: 'Full Name',
-                                hintText: 'Enter your full name'),
+                                labelText: 'Store Name',
+                                hintText: 'Enter your store name'),
                           )),
                       Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -278,7 +278,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                         actionLabel: 'log In',
                         onPressed: () {
                           Navigator.pushReplacementNamed(
-                              context, '/customer_login');
+                              context, '/supplier_login');
                         },
                       ),
                       processing == true

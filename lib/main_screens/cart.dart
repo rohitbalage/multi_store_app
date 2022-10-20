@@ -49,7 +49,7 @@ class _CartScreenState extends State<CartScreen> {
                     Navigator.canPop(context)
                         ? Navigator.pop(context)
                         : Navigator.pushReplacementNamed(
-                            context, '/Customer_home');
+                            context, '/customer_home');
                   },
                   child: const Text(
                     'continue shopping',

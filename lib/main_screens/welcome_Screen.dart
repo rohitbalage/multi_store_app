@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/main_screens/supplier_home.dart';
 import '../widgets/yellowbuttion.dart';
@@ -25,6 +27,10 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
+  CollectionReference customers =
+      FirebaseFirestore.instance.collection('customers');
+  late String _uid;
+
   late AnimationController _controller;
   bool processing = false;
 
@@ -141,7 +147,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                     label: 'Log In',
                                     onPressed: () {
                                       Navigator.pushReplacementNamed(
-                                          context, '/Supplier_home');
+                                          context, '/supplier_login');
                                     },
                                   ),
                                   Padding(
@@ -149,7 +155,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                     child: YellowButton(
                                       width: 0.25,
                                       label: 'Sign up',
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.pushReplacementNamed(
+                                            context, '/supplier_signup');
+                                      },
                                     ),
                                   )
                                 ],
@@ -179,7 +188,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           label: 'Log In',
                           onPressed: () {
                             Navigator.pushReplacementNamed(
-                                context, '/Customer_login');
+                                context, '/customer_login');
                           },
                         ),
                       ),
@@ -188,7 +197,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         label: 'Sign up',
                         onPressed: () {
                           Navigator.pushReplacementNamed(
-                              context, '/Customer_signup');
+                              context, '/customer_signup');
                         },
                       ),
                       AnimatedLogo(controller: _controller),
@@ -225,9 +234,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                     });
 
                                     await FirebaseAuth.instance
-                                        .signInAnonymously();
+                                        .signInAnonymously()
+                                        .whenComplete(() async {
+                                      _uid = FirebaseAuth
+                                          .instance.currentUser!.uid;
+                                      await customers.doc(_uid).set({
+                                        'name': '',
+                                        'email': '',
+                                        'profileimage': '',
+                                        'phone': '',
+                                        'address': '',
+                                        'cid': _uid,
+                                      });
+                                    });
+
                                     Navigator.pushReplacementNamed(
-                                        context, '/Customer_home');
+                                        context, '/customer_home');
                                   },
                                   child: const Icon(
                                     Icons.person,

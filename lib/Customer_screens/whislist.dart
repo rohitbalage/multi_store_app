@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 
-class Whishlist extends StatelessWidget {
-  const Whishlist({super.key});
+class WhishlistScreen extends StatelessWidget {
+  const WhishlistScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

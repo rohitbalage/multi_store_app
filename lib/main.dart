@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/Auth/customer_login.dart';
 import 'package:multi_store_app/Auth/customer_signup.dart';
+import 'package:multi_store_app/Auth/supplier_login.dart';
+import 'package:multi_store_app/Auth/supplier_signup.dart';
 import 'package:multi_store_app/main_screens/customer_home.dart';
 import 'package:multi_store_app/main_screens/supplier_home.dart';
 import 'package:multi_store_app/main_screens/welcome_Screen.dart';
@@ -23,13 +25,15 @@ class MyApp extends StatelessWidget {
       title: 'Multi Store App',
       // home: WelcomeScreen(),
 
-      initialRoute: '/Welcome_screen',
+      initialRoute: '/welcome_screen',
       routes: {
-        '/Welcome_screen': (context) => const WelcomeScreen(),
-        '/Customer_home': (context) => const CustomerHomeScreen(),
-        '/Supplier_home': (context) => const SupplierHomeScren(),
-        '/Customer_signup': (context) => const CustomerRegister(),
-        '/Customer_login': (context) => const CustomerLogin(),
+        '/welcome_screen': (context) => const WelcomeScreen(),
+        '/customer_home': (context) => const CustomerHomeScreen(),
+        '/supplier_home': (context) => const SupplierHomeScren(),
+        '/customer_signup': (context) => const CustomerRegister(),
+        '/customer_login': (context) => const CustomerLogin(),
+        '/supplier_login': (context) => const SupplierLogin(),
+        '/supplier_signup': (context) => const SupplierRegister(),
       },
     );
   }

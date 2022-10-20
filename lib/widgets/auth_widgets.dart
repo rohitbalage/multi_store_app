@@ -33,10 +33,11 @@ class HaveAccount extends StatelessWidget {
   final String actionLabel;
   final Function() onPressed;
   const HaveAccount(
-      {super.key,
+      {Key? key,
       required this.actionLabel,
       required this.haveAccount,
-      required this.onPressed});
+      required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class HaveAccount extends StatelessWidget {
           style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
         ),
         TextButton(
-            onPressed: () {},
+            onPressed: onPressed,
             child: Text(
               actionLabel,
               style: const TextStyle(
@@ -78,7 +79,7 @@ class AuthHeaderLabel extends StatelessWidget {
           ),
           IconButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/Welcome_Screen');
+                Navigator.pushReplacementNamed(context, '/welcome_screen');
               },
               icon: const Icon(
                 Icons.home_work,
