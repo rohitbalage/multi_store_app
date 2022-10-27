@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_app/gallaries/men_gallery.dart';
 import 'package:multi_store_app/minor_screens/search.dart';
 
 import '../widgets/fake_search.dart';
@@ -57,9 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         body: const TabBarView(children: [
-          Center(
-            child: Text('men screen'),
-          ),
+          MenGalleryScreen(),
           Center(
             child: Text('women screen'),
           ),
