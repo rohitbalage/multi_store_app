@@ -1,6 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_app/gallaries/accessories_gallery.dart';
+import 'package:multi_store_app/gallaries/bags_gallery.dart';
+import 'package:multi_store_app/gallaries/beauty_gallery.dart';
+import 'package:multi_store_app/gallaries/electronics_gallery.dart';
+import 'package:multi_store_app/gallaries/homeandgarden_gallery.dart';
+import 'package:multi_store_app/gallaries/kids_gallery.dart';
 import 'package:multi_store_app/gallaries/men_gallery.dart';
+import 'package:multi_store_app/gallaries/shoes_gallery.dart';
+import 'package:multi_store_app/gallaries/women_gallery.dart';
 import 'package:multi_store_app/minor_screens/search.dart';
 
 import '../widgets/fake_search.dart';
@@ -18,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return DefaultTabController(
       length: 9,
       child: Scaffold(
+        backgroundColor: Colors.blueGrey.shade100.withOpacity(0.5),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.white,
@@ -59,30 +68,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: const TabBarView(children: [
           MenGalleryScreen(),
-          Center(
-            child: Text('women screen'),
-          ),
-          Center(
-            child: Text('shoes screen'),
-          ),
-          Center(
-            child: Text('bag screen'),
-          ),
-          Center(
-            child: Text('electronics screen'),
-          ),
-          Center(
-            child: Text('accessories screen'),
-          ),
-          Center(
-            child: Text('home and garden screen'),
-          ),
-          Center(
-            child: Text('kids screen'),
-          ),
-          Center(
-            child: Text('beauty screen'),
-          ),
+          WomenGalleryScreen(),
+          ShoesGalleryScreen(),
+          BagsGalleryScreen(),
+          ElectronicsGalleryScreen(),
+          AccessoriesGalleryScreen(),
+          HomeandGardenGalleryScreen(),
+          KidsGalleryScreen(),
+          BeautyGalleryScreen()
         ]),
       ),
     );
