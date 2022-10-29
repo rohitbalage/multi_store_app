@@ -267,8 +267,8 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                                     },
                                     icon: Icon(
                                       passwordVisible
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
                                       color: Colors.purple,
                                     )),
                                 hintText: 'Enter your password'),

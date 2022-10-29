@@ -267,8 +267,8 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                                     },
                                     icon: Icon(
                                       passwordVisible
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
                                       color: Colors.purple,
                                     )),
                                 hintText: 'Enter your password'),
