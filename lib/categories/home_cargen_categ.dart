@@ -45,10 +45,10 @@ class HomeGardenCategory extends StatelessWidget {
                       crossAxisSpacing: 15,
                       crossAxisCount: 3,
                       children: List.generate(
-                        bags.length,
+                        homeandgarden.length,
                         (index) {
                           return SubCategModel(
-                            mainCategName: 'homeandgarden',
+                            mainCategName: 'home & garden',
                             subCategName: homeandgarden[index],
                             assetName: 'images/homegarden/home$index.jpg',
                             subcategLabel: homeandgarden[index],
@@ -64,7 +64,7 @@ class HomeGardenCategory extends StatelessWidget {
             bottom: 0,
             right: 0,
             child: SiderBar(
-              mainCategName: 'homeandgarden',
+              mainCategName: 'home & garden',
             ))
       ],
     );

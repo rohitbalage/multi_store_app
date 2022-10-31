@@ -60,17 +60,6 @@ class _AccessoriesGalleryScreenState extends State<AccessoriesGalleryScreen> {
               },
               staggeredTileBuilder: (context) => const StaggeredTile.fit(1)),
         );
-        // ListView(
-        //   children: snapshot.data!.docs.map((DocumentSnapshot document) {
-        //     Map<String, dynamic> data =
-        //         document.data()! as Map<String, dynamic>;
-        //     return ListTile(
-        //       leading: Image(image: NetworkImage(data['proimages'][0])),
-        //       title: Text(data['proname']),
-        //       subtitle: Text(data['price'].toString()),
-        //     );
-        //   }).toList(),
-        // );
       },
     );
   }

@@ -45,7 +45,7 @@ class ShoesCategory extends StatelessWidget {
                       crossAxisSpacing: 15,
                       crossAxisCount: 3,
                       children: List.generate(
-                        men.length,
+                        shoes.length,
                         (index) {
                           return SubCategModel(
                             mainCategName: 'shoes',
@@ -64,7 +64,7 @@ class ShoesCategory extends StatelessWidget {
             bottom: 0,
             right: 0,
             child: SiderBar(
-              mainCategName: 'shoess',
+              mainCategName: 'shoes',
             ))
       ],
     );

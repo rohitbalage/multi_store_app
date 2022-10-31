@@ -48,7 +48,7 @@ class ElectronicsCategory extends StatelessWidget {
                         electronics.length,
                         (index) {
                           return SubCategModel(
-                            mainCategName: 'Electronics',
+                            mainCategName: 'electronics',
                             subCategName: electronics[index],
                             assetName:
                                 'images/electronics/electronics$index.jpg',

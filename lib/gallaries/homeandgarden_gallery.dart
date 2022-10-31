@@ -18,7 +18,7 @@ class _HomeandGardenGalleryScreenState
     extends State<HomeandGardenGalleryScreen> {
   final Stream<QuerySnapshot> _productstream = FirebaseFirestore.instance
       .collection('products')
-      .where('maincateg', isEqualTo: 'electronics')
+      .where('maincateg', isEqualTo: 'home & garden')
       .snapshots();
 
   @override
