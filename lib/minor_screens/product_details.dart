@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:multi_store_app/minor_screens/full_screen_view.dart';
 import 'package:multi_store_app/widgets/yellowbuttion.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
@@ -30,17 +31,59 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  child: Swiper(
-                      pagination: const SwiperPagination(
-                          builder: SwiperPagination.fraction),
-                      itemBuilder: (context, index) {
-                        return Image(
-                          image: NetworkImage(imagesList[index]),
-                        );
-                      },
-                      itemCount: imagesList.length),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FullScreenView(
+                                  imagesList: imagesList,
+                                )));
+                  },
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.45,
+                        child: Swiper(
+                            pagination: const SwiperPagination(
+                                builder: SwiperPagination.fraction),
+                            itemBuilder: (context, index) {
+                              return Image(
+                                image: NetworkImage(imagesList[index]),
+                              );
+                            },
+                            itemCount: imagesList.length),
+                      ),
+                      Positioned(
+                          left: 15,
+                          top: 20,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.yellow,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.arrow_back_ios_new,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          )),
+                      Positioned(
+                          right: 15,
+                          top: 20,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.yellow,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.share,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ))
+                    ],
+                  ),
                 ),
                 Text(
                   widget.prolist['proname'],
