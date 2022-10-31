@@ -115,5 +115,8 @@ flutter:
     - family: Acme
       fonts: 
         - asset: fonts/Acme-Regular.ttf
+    - family: AKayaTelivigala
+      fonts: 
+        - asset: fonts/AkayaTelivigala-Regular.ttf       
 
       
