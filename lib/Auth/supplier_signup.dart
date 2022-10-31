@@ -52,6 +52,24 @@ class _SupplierRegisterState extends State<SupplierRegister> {
     }
   }
 
+  void _pickImageFromGallery() async {
+    try {
+      final pickedImage = await _picker.pickImage(
+          source: ImageSource.gallery,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: 95);
+      setState(() {
+        _imageFile = pickedImage;
+      });
+    } catch (e) {
+      setState(() {
+        _pickedImageError = e;
+      });
+      print(_pickedImageError);
+    }
+  }
+
   void signUp() async {
     setState(() {
       processing = true;
@@ -64,7 +82,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
 
           firebase_Storage.Reference ref = firebase_Storage
               .FirebaseStorage.instance
-              .ref('cust-images/$email.jpg');
+              .ref('str-images/$email.jpg');
 
           await ref.putFile(File(_imageFile!.path));
           _uid = FirebaseAuth.instance.currentUser!.uid;
@@ -112,24 +130,6 @@ class _SupplierRegisterState extends State<SupplierRegister> {
         processing = false;
       });
       myMesssageHandler.showSnackbar(_scaffoldKey, 'Please fill all fields');
-    }
-  }
-
-  void _pickImageFromGallery() async {
-    try {
-      final pickedImage = await _picker.pickImage(
-          source: ImageSource.camera,
-          maxHeight: 300,
-          maxWidth: 300,
-          imageQuality: 95);
-      setState(() {
-        _imageFile = pickedImage;
-      });
-    } catch (e) {
-      setState(() {
-        _pickedImageError = e;
-      });
-      print(_pickedImageError);
     }
   }
 

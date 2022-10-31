@@ -118,7 +118,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   void _pickImageFromGallery() async {
     try {
       final pickedImage = await _picker.pickImage(
-          source: ImageSource.camera,
+          source: ImageSource.gallery,
           maxHeight: 300,
           maxWidth: 300,
           imageQuality: 95);
