@@ -27,8 +27,8 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
-  CollectionReference customers =
-      FirebaseFirestore.instance.collection('customers');
+  CollectionReference anonymous =
+      FirebaseFirestore.instance.collection('anonymous');
   late String _uid;
 
   late AnimationController _controller;
@@ -238,7 +238,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                         .whenComplete(() async {
                                       _uid = FirebaseAuth
                                           .instance.currentUser!.uid;
-                                      await customers.doc(_uid).set({
+                                      await anonymous.doc(_uid).set({
                                         'name': '',
                                         'email': '',
                                         'profileimage': '',

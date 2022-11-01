@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:multi_store_app/main_screens/visit_store.dart';
 import 'package:multi_store_app/minor_screens/full_screen_view.dart';
 import 'package:multi_store_app/widgets/yellowbuttion.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
@@ -195,7 +196,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               children: [
                 Row(
                   children: [
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.store)),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => VisitStore(
+                                      suppId: widget.prolist['sid'])));
+                        },
+                        icon: const Icon(Icons.store)),
                     const SizedBox(
                       width: 20,
                     ),

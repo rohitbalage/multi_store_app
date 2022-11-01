@@ -2,10 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/dashboard_components/edit_business.dart';
 import 'package:multi_store_app/dashboard_components/manage_products.dart';
-import 'package:multi_store_app/dashboard_components/my_store.dart';
+
 import 'package:multi_store_app/dashboard_components/supp_balance.dart';
 import 'package:multi_store_app/dashboard_components/supp_orders.dart';
 import 'package:multi_store_app/dashboard_components/supp_statics.dart';
+import 'package:multi_store_app/main_screens/visit_store.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 
 import '../widgets/alert_dialog.dart';
@@ -28,13 +29,13 @@ List<String> labels = [
   'statics',
 ];
 
-List<Widget> pages = const [
-  MyStore(),
-  SupplierOrder(),
-  EditBusiness(),
-  ManageProducts(),
-  BalanceScreen(),
-  StaticsScreen(),
+List<Widget> pages = [
+  VisitStore(suppId: FirebaseAuth.instance.currentUser!.uid),
+  const SupplierOrder(),
+  const EditBusiness(),
+  const ManageProducts(),
+  const BalanceScreen(),
+  const StaticsScreen(),
 ];
 
 class DashboardScreen extends StatelessWidget {
