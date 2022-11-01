@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rrbofficial.multi_store_app">
    <application
-        android:label="multi_store_app"
+        android:label="Salease"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
