@@ -36,7 +36,10 @@ class StoresScreen extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const VisitStore()));
+                                  builder: (context) => VisitStore(
+                                        suppId: snapshot.data!.docs[index]
+                                            ['sid'],
+                                      )));
                         },
                         child: Column(
                           children: [
