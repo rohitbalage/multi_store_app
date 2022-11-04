@@ -5,6 +5,7 @@ import 'package:multi_store_app/main_screens/cart.dart';
 import 'package:multi_store_app/main_screens/visit_store.dart';
 import 'package:multi_store_app/minor_screens/full_screen_view.dart';
 import 'package:multi_store_app/providers/cart_provider.dart';
+import 'package:multi_store_app/providers/wish_provider.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 import 'package:multi_store_app/widgets/snackbar.dart';
 import 'package:multi_store_app/widgets/yellowbuttion.dart';
@@ -121,7 +122,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ],
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context
+                                          .read<Wish>()
+                                          .getWishItems
+                                          .firstWhereOrNull((product) =>
+                                              product.documentId ==
+                                              widget.prolist['proid']) !=
+                                      null
+                                  ? myMesssageHandler.showSnackbar(_scaffoldKey,
+                                      'this item already in the  Wishlist')
+                                  : context.read<Wish>().addWishItem(
+                                        widget.prolist['proname'],
+                                        widget.prolist['price'],
+                                        1,
+                                        widget.prolist['instock'],
+                                        widget.prolist['proimages'],
+                                        widget.prolist['proid'],
+                                        widget.prolist['sid'],
+                                      );
+                            },
                             icon: const Icon(
                               Icons.favorite_outline_outlined,
                               color: Colors.red,
@@ -132,7 +152,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     (widget.prolist['instock'].toString()) +
                         (' pieces available in a stock'),
                     textAlign: TextAlign.left,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.blueGrey,
                     ),
