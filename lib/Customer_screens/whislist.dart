@@ -4,6 +4,8 @@ import 'package:multi_store_app/providers/wish_provider.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 
 import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
+import '../providers/cart_provider.dart';
 
 class WhishlistScreen extends StatefulWidget {
   @override
@@ -141,7 +143,28 @@ class WishItems extends StatelessWidget {
                                 Row(
                                   children: [
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          context
+                                                      .read<Cart>()
+                                                      .getItems
+                                                      .firstWhereOrNull(
+                                                          (element) =>
+                                                              element
+                                                                  .documentId ==
+                                                              product
+                                                                  .documentId) !=
+                                                  null
+                                              ? print('in cart')
+                                              : context.read<Cart>().addItem(
+                                                    product.name,
+                                                    product.price,
+                                                    1,
+                                                    product.qntty,
+                                                    product.imagesUrl,
+                                                    product.documentId,
+                                                    product.suppId,
+                                                  );
+                                        },
                                         icon: const Icon(Icons.shopping_cart))
                                   ],
                                 )

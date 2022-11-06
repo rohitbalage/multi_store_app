@@ -130,8 +130,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               product.documentId ==
                                               widget.prolist['proid']) !=
                                       null
-                                  ? myMesssageHandler.showSnackbar(_scaffoldKey,
-                                      'this item already in the  Wishlist')
+                                  ? context
+                                      .read<Wish>()
+                                      .removeThis(widget.prolist['proid'])
                                   : context.read<Wish>().addWishItem(
                                         widget.prolist['proname'],
                                         widget.prolist['price'],
@@ -142,11 +143,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         widget.prolist['sid'],
                                       );
                             },
-                            icon: const Icon(
-                              Icons.favorite_outline_outlined,
-                              color: Colors.red,
-                              size: 30,
-                            )),
+                            icon: context
+                                        .watch<Wish>()
+                                        .getWishItems
+                                        .firstWhereOrNull((product) =>
+                                            product.documentId ==
+                                            widget.prolist['proid']) !=
+                                    null
+                                ? const Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                    size: 30,
+                                  )
+                                : const Icon(
+                                    Icons.favorite_outline_outlined,
+                                    color: Colors.red,
+                                    size: 30,
+                                  ))
                       ]),
                   Text(
                     (widget.prolist['instock'].toString()) +
