@@ -14,6 +14,8 @@ import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import '../model/product_model.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:badges/badges.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final dynamic prolist;
@@ -24,16 +26,19 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  late final Stream<QuerySnapshot> _productstream = FirebaseFirestore.instance
+      .collection('products')
+      .where('maincateg', isEqualTo: widget.prolist['maincateg'])
+      .where('subcateg', isEqualTo: widget.prolist['subcateg'])
+      .snapshots();
+
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
   late List<dynamic> imagesList = widget.prolist['proimages'];
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> _productstream = FirebaseFirestore.instance
-        .collection('products')
-        .where('maincateg', isEqualTo: widget.prolist['maincateg'])
-        .where('subcateg', isEqualTo: widget.prolist['subcateg'])
-        .snapshots();
+    var existingItemCart = context.read<Cart>().getItems.firstWhereOrNull(
+        (product) => product.documentId == widget.prolist['proid']);
     return Material(
       child: SafeArea(
         child: ScaffoldMessenger(
@@ -123,13 +128,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                         IconButton(
                             onPressed: () {
-                              context
-                                          .read<Wish>()
-                                          .getWishItems
-                                          .firstWhereOrNull((product) =>
-                                              product.documentId ==
-                                              widget.prolist['proid']) !=
-                                      null
+                              var existingItemWishlist = context
+                                  .read<Wish>()
+                                  .getWishItems
+                                  .firstWhereOrNull((product) =>
+                                      product.documentId ==
+                                      widget.prolist['proid']);
+
+                              existingItemWishlist != null
                                   ? context
                                       .read<Wish>()
                                       .removeThis(widget.prolist['proid'])
@@ -262,17 +268,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ),
                                 ));
                           },
-                          icon: const Icon(Icons.shopping_cart)),
+                          icon: Badge(
+                              showBadge: context.read<Cart>().getItems.isEmpty
+                                  ? false
+                                  : true,
+                              padding: const EdgeInsets.all(2),
+                              badgeColor: Colors.yellowAccent,
+                              badgeContent: Text(
+                                context
+                                    .watch<Cart>()
+                                    .getItems
+                                    .length
+                                    .toString(),
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w600),
+                              ),
+                              child: const Icon(Icons.shopping_cart))),
                     ],
                   ),
                   YellowButton(
-                      label: 'ADD TO CART',
+                      label: existingItemCart != null
+                          ? 'ADDED TO CART'
+                          : 'ADD TO CART',
                       onPressed: () {
-                        context.read<Cart>().getItems.firstWhereOrNull(
-                                    (product) =>
-                                        product.documentId ==
-                                        widget.prolist['proid']) !=
-                                null
+                        existingItemCart != null
                             ? myMesssageHandler.showSnackbar(
                                 _scaffoldKey, 'this item already in the  cart')
                             : context.read<Cart>().addItem(

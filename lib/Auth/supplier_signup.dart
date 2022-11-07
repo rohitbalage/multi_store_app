@@ -159,7 +159,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                                 vertical: 20, horizontal: 40),
                             child: CircleAvatar(
                               radius: 60,
-                              backgroundColor: Colors.purpleAccent,
+                              backgroundColor: Colors.yellowAccent,
                               backgroundImage: _imageFile == null
                                   ? null
                                   : FileImage(File(_imageFile!.path)),
@@ -169,14 +169,14 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                             children: [
                               Container(
                                 decoration: const BoxDecoration(
-                                    color: Colors.purple,
+                                    color: Colors.yellowAccent,
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(15),
                                         topRight: Radius.circular(15))),
                                 child: IconButton(
                                   icon: const Icon(
                                     Icons.camera_alt,
-                                    color: Colors.white,
+                                    color: Colors.black,
                                   ),
                                   onPressed: () {
                                     _pickImageFromCamera();
@@ -188,14 +188,14 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                               ),
                               Container(
                                 decoration: const BoxDecoration(
-                                    color: Colors.purple,
+                                    color: Colors.yellowAccent,
                                     borderRadius: BorderRadius.only(
                                         bottomLeft: Radius.circular(15),
                                         bottomRight: Radius.circular(15))),
                                 child: IconButton(
                                   icon: const Icon(
                                     Icons.photo,
-                                    color: Colors.white,
+                                    color: Colors.black,
                                   ),
                                   onPressed: () {
                                     _pickImageFromGallery();
@@ -209,6 +209,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                       Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: TextFormField(
+                            style: const TextStyle(color: Colors.yellowAccent),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter your store name';
@@ -226,6 +227,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                       Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: TextFormField(
+                            style: const TextStyle(color: Colors.yellowAccent),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter your email';
