@@ -5,6 +5,7 @@ import 'package:multi_store_app/providers/cart_provider.dart';
 import 'package:multi_store_app/providers/product_class.dart';
 import 'package:multi_store_app/widgets/alert_dialog.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
+import '../minor_screens/PlaceOrderScreen.dart';
 import '../model/cart_model.dart';
 import '../providers/wish_provider.dart';
 import '../widgets/yellowbuttion.dart';
@@ -22,6 +23,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    double total = context.watch<Cart>().totalPrice;
     return Material(
       child: SafeArea(
         child: Scaffold(
@@ -65,7 +67,7 @@ class _CartScreenState extends State<CartScreen> {
               child: Row(
                 children: [
                   Text('Total: \$ ', style: TextStyle(fontSize: 20)),
-                  Text(context.watch<Cart>().totalPrice.toStringAsFixed(2),
+                  Text(total.toStringAsFixed(2),
                       style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -73,10 +75,24 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             ),
-            YellowButton(
-              width: 0.45,
-              label: 'CHECKOUT',
-              onPressed: () {},
+            Container(
+              height: 35,
+              width: MediaQuery.of(context).size.width * 0.45,
+              decoration: BoxDecoration(
+                  color: Colors.yellow,
+                  borderRadius: BorderRadius.circular(25)),
+              child: MaterialButton(
+                onPressed: total == 0.0
+                    ? null
+                    : () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const PlaceOrderScreen()));
+                      },
+                child: const Text('CHCEK OUT'),
+              ),
             )
           ]),
         ),
