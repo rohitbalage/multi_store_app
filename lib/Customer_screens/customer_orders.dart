@@ -111,6 +111,49 @@ class CustomerOrders extends StatelessWidget {
                                 const Text('see more...'),
                                 Text(order['deliverystatus'])
                               ]),
+                          children: [
+                            Container(
+                              height: 200,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        ('Name: ') + (order['customername']),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      Text(
+                                        ('Phone No: ') + (order['phone']),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      Text(
+                                        ('Email Address: ') + (order['email']),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      Text(
+                                        ('Address: ') + (order['address']),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      Text(
+                                        ('Payment status: ') +
+                                            (order['paymentstatus']),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      Text(
+                                        ('Delivery status: ') +
+                                            (order['deliverystatus']),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ]),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     );

@@ -67,10 +67,11 @@ class WhishlistModel extends StatelessWidget {
                         Row(
                           children: [
                             context.watch<Cart>().getItems.firstWhereOrNull(
-                                        (element) =>
-                                            element.documentId ==
-                                            product.documentId) !=
-                                    null
+                                            (element) =>
+                                                element.documentId ==
+                                                product.documentId) !=
+                                        null ||
+                                    product.qntty == 0
                                 ? const SizedBox()
                                 : IconButton(
                                     onPressed: () {

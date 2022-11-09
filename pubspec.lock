@@ -480,6 +480,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  percent_indicator:
+    dependency: "direct main"
+    description:
+      name: percent_indicator
+      sha256: cec41f67181fbd5322aa68b355621d1a4eea827426b8eeb613f6cbe195ff7b4a
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.2"
   petitparser:
     dependency: transitive
     description:
@@ -504,19 +512,19 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.4"
+  simple_circular_progress_bar:
+    dependency: "direct main"
+    description:
+      name: simple_circular_progress_bar
+      sha256: e661ca942fbc617298e975b41fde19003d995de73ca6c2a1526c54d52f07151b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   sky_engine:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.99"
-  sn_progress_dialog:
-    dependency: "direct main"
-    description:
-      name: sn_progress_dialog
-      sha256: "2e5db04326acb71d42d3f35c6a9fc84dd44fab75d8ff60397597f6d858f6b2ee"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
   source_span:
     dependency: transitive
     description:
@@ -615,4 +623,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.19.0-201.0.dev <4.0.0"
-  flutter: ">=2.11.0-0.1.pre"
+  flutter: ">=2.12.0"
