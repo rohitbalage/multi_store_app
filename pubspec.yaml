@@ -55,6 +55,7 @@ dependencies:
   badges: ^2.0.3
   percent_indicator: ^4.2.2
   simple_circular_progress_bar: ^1.0.2
+  flutter_datetime_picker: ^1.5.1
   
 
  
