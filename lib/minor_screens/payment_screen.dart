@@ -236,23 +236,75 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 onPressed: () async {
                                                   for (var item in context
                                                       .read<Cart>()
-                                                      .getItems) {}
-                                                  CollectionReference orderRef =
-                                                      FirebaseFirestore.instance
-                                                          .collection('orders');
-                                                  orderId = const Uuid().v4();
-                                                  await orderRef
-                                                      .doc(orderId)
-                                                      .set({
-                                                    'cid': data['cid'],
-                                                    'customername':
-                                                        data['name'],
-                                                    'email': data['email'],
-                                                    'address': data['address'],
-                                                    'phone': data['phone'],
-                                                    'profileimage':
-                                                        data['iprofileimage'],
-                                                  });
+                                                      .getItems) {
+                                                    CollectionReference
+                                                        orderRef =
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'orders');
+                                                    orderId = const Uuid().v4();
+                                                    await orderRef
+                                                        .doc(orderId)
+                                                        .set({
+                                                      'cid': data['cid'],
+                                                      'customername':
+                                                          data['name'],
+                                                      'email': data['email'],
+                                                      'address':
+                                                          data['address'],
+                                                      'phone': data['phone'],
+                                                      'profileimage':
+                                                          data['iprofileimage'],
+                                                      'sid': item.suppId,
+                                                      'proid': item.documentId,
+                                                      'orderid': orderId,
+                                                      'order image':
+                                                          item.imagesUrl.first,
+                                                      'orderqty': item.qty,
+                                                      'orderpice':
+                                                          item.qty * item.price,
+                                                      'deliverystatus':
+                                                          'preparing',
+                                                      'deliverydate': '',
+                                                      'orderdate':
+                                                          DateTime.now(),
+                                                      'paymentstatus':
+                                                          'cash on delivery',
+                                                      'orderreview': false,
+                                                    }).whenComplete(
+                                                            () async => {
+                                                                  await FirebaseFirestore
+                                                                      .instance
+                                                                      .runTransaction(
+                                                                          (transaction) async {
+                                                                    DocumentReference documentReference = FirebaseFirestore
+                                                                        .instance
+                                                                        .collection(
+                                                                            'products')
+                                                                        .doc(item
+                                                                            .documentId);
+                                                                    DocumentSnapshot
+                                                                        snapshot2 =
+                                                                        await transaction
+                                                                            .get(documentReference);
+                                                                    transaction
+                                                                        .update(
+                                                                            documentReference,
+                                                                            {
+                                                                          'instock':
+                                                                              snapshot2['instock'] - item.qty
+                                                                        });
+                                                                  })
+                                                                });
+                                                  }
+                                                  context
+                                                      .read<Cart>()
+                                                      .clearCart();
+                                                  Navigator.popUntil(
+                                                      context,
+                                                      ModalRoute.withName(
+                                                          '/customer_home'));
                                                 },
                                                 width: 0.9)
                                           ],

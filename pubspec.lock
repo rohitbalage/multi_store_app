@@ -509,14 +509,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  sn_progress_dialog:
-    dependency: "direct main"
-    description:
-      name: sn_progress_dialog
-      sha256: "2e5db04326acb71d42d3f35c6a9fc84dd44fab75d8ff60397597f6d858f6b2ee"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
   source_span:
     dependency: transitive
     description:
@@ -601,10 +593,10 @@ packages:
     dependency: transitive
     description:
       name: xml
-      sha256: "1a235945f0831980f690291fe7744e440d73acb20fc18b923cea373f391a2837"
+      sha256: "0be2cc68212206ab22f700a706782f79a303fb7d4b51279ac394bcc5545f273f"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "6.2.1"
   yaml:
     dependency: transitive
     description:
