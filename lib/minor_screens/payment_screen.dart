@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:multi_store_app/main_screens/profile.dart';
+
 import 'package:multi_store_app/widgets/appbar_widgets.dart';
+
 import 'package:multi_store_app/widgets/yellowbuttion.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../providers/cart_provider.dart';
 
@@ -20,6 +21,7 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   int selectedValue = 1;
+  late String orderId;
   CollectionReference customers =
       FirebaseFirestore.instance.collection('customers');
 
@@ -210,7 +212,58 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         label: 'Confirm ${totalPaid.toStringAsFixed(2)} USD',
                         width: 1,
                         onPressed: () {
-                          print(selectedValue);
+                          if (selectedValue == 1) {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.3,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 100),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(
+                                                'Pay at Home ${totalPaid.toStringAsFixed(2)} \$',
+                                                style: const TextStyle(
+                                                    fontSize: 24)),
+                                            YellowButton(
+                                                label:
+                                                    'Confirm ${totalPaid.toStringAsFixed(2)}\$S',
+                                                onPressed: () async {
+                                                  for (var item in context
+                                                      .read<Cart>()
+                                                      .getItems) {}
+                                                  CollectionReference orderRef =
+                                                      FirebaseFirestore.instance
+                                                          .collection('orders');
+                                                  orderId = const Uuid().v4();
+                                                  await orderRef
+                                                      .doc(orderId)
+                                                      .set({
+                                                    'cid': data['cid'],
+                                                    'customername':
+                                                        data['name'],
+                                                    'email': data['email'],
+                                                    'address': data['address'],
+                                                    'phone': data['phone'],
+                                                    'profileimage':
+                                                        data['iprofileimage'],
+                                                  });
+                                                },
+                                                width: 0.9)
+                                          ],
+                                        ),
+                                      ),
+                                    ));
+                          } else if (selectedValue == 2) {
+                            print('Visa');
+                          } else if (selectedValue == 3) {
+                            print('Paypal');
+                          }
                         },
                       ),
                     ),
