@@ -167,15 +167,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     size: 30,
                                   ))
                       ]),
-                  Text(
-                    (widget.prolist['instock'].toString()) +
-                        (' pieces available in a stock'),
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.blueGrey,
-                    ),
-                  ),
+                  widget.prolist['instock'] == 0
+                      ? const Text(
+                          'Sorry, this item is out of stock',
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        )
+                      : Text(
+                          (widget.prolist['instock'].toString()) +
+                              (' pieces available in a stock'),
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.blueGrey,
+                          ),
+                        ),
                   const ProductDetailHeader(
                     label: '  Item Description  ',
                   ),
@@ -291,18 +296,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ? 'ADDED TO CART'
                           : 'ADD TO CART',
                       onPressed: () {
-                        existingItemCart != null
-                            ? myMesssageHandler.showSnackbar(
-                                _scaffoldKey, 'this item already in the  cart')
-                            : context.read<Cart>().addItem(
-                                  widget.prolist['proname'],
-                                  widget.prolist['price'],
-                                  1,
-                                  widget.prolist['instock'],
-                                  widget.prolist['proimages'],
-                                  widget.prolist['proid'],
-                                  widget.prolist['sid'],
-                                );
+                        if (widget.prolist['instock'] == 0) {
+                          myMesssageHandler.showSnackbar(
+                              _scaffoldKey, 'this item is out of stock');
+                        } else if (existingItemCart != null) {
+                          myMesssageHandler.showSnackbar(
+                              _scaffoldKey, 'this item already in the  cart');
+                        } else {
+                          context.read<Cart>().addItem(
+                                widget.prolist['proname'],
+                                widget.prolist['price'],
+                                1,
+                                widget.prolist['instock'],
+                                widget.prolist['proimages'],
+                                widget.prolist['proid'],
+                                widget.prolist['sid'],
+                              );
+                        }
                       },
                       width: 0.5)
                 ],
