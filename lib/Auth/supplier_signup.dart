@@ -209,7 +209,6 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                       Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: TextFormField(
-                            style: const TextStyle(color: Colors.yellowAccent),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter your store name';
@@ -227,7 +226,6 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                       Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: TextFormField(
-                            style: const TextStyle(color: Colors.yellowAccent),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter your email';

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../widgets/auth_widgets.dart';
 import '../widgets/snackBar.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_Storage;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class CustomerRegister extends StatefulWidget {
   const CustomerRegister({super.key});
@@ -62,7 +62,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           await FirebaseAuth.instance
               .createUserWithEmailAndPassword(email: email, password: password);
 
-          firebase_Storage.Reference ref = firebase_Storage
+          firebase_storage.Reference ref = firebase_storage
               .FirebaseStorage.instance
               .ref('cust-images/$email.jpg');
 
