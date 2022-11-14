@@ -323,7 +323,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ),
                                     ));
                           } else if (selectedValue == 2) {
-                            makePayment();
+                            int payment = totalPaid.round();
+                            int pay = payment * 100;
+
+                            makePayment(data, pay.toString());
                           } else if (selectedValue == 3) {
                             print('Paypal');
                           }
@@ -343,21 +346,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Map<String, dynamic>? paymentIntentData;
 
-  void makePayment() async {
+  void makePayment(dynamic data, String total) async {
     // createPaymentIntnet
     //initPaymentSheet
     //displayPaymentSheet
 
-    paymentIntentData = await createPaymentIntnet();
+    paymentIntentData = await createPaymentIntnet(total, 'USD');
     await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
             paymentIntentClientSecret: paymentIntentData!['client_secret'],
             merchantDisplayName: 'TO SALEASE'));
 
-    await displayPaymentSheet();
+    await displayPaymentSheet(data);
   }
 
-  displayPaymentSheet() async {
+  displayPaymentSheet(var data) async {
     try {
       await Stripe.instance
           .presentPaymentSheet(
@@ -367,17 +370,58 @@ class _PaymentScreenState extends State<PaymentScreen> {
           .then((value) async {
         paymentIntentData = null;
         print('paid');
+
+        showProgess();
+        for (var item in context.read<Cart>().getItems) {
+          CollectionReference orderRef =
+              FirebaseFirestore.instance.collection('orders');
+          orderId = const Uuid().v4();
+          await orderRef.doc(orderId).set({
+            'cid': data['cid'],
+            'customername': data['name'],
+            'email': data['email'],
+            'address': data['address'],
+            'phone': data['phone'],
+            'profileimage': data['iprofileimage'],
+            'sid': item.suppId,
+            'proid': item.documentId,
+            'orderid': orderId,
+            'ordername': item.name,
+            'orderimage': item.imagesUrl.first,
+            'orderqty': item.qty,
+            'orderprice': item.qty * item.price,
+            'deliverystatus': 'preparing',
+            'deliverydate': '',
+            'orderdate': DateTime.now(),
+            'paymentstatus': 'paid online',
+            'orderreview': false,
+          }).whenComplete(() async => {
+                await FirebaseFirestore.instance
+                    .runTransaction((transaction) async {
+                  DocumentReference documentReference = FirebaseFirestore
+                      .instance
+                      .collection('products')
+                      .doc(item.documentId);
+                  DocumentSnapshot snapshot2 =
+                      await transaction.get(documentReference);
+                  transaction.update(documentReference,
+                      {'instock': snapshot2['instock'] - item.qty});
+                })
+              });
+          context.read<Cart>().clearCart();
+          Navigator.popUntil(context, ModalRoute.withName('/customer_home'));
+        }
       });
     } catch (e) {
       print(e.toString());
     }
   }
 
-  createPaymentIntnet() async {
+  createPaymentIntnet(String total, String currency) async {
     try {
       Map<String, dynamic> body = {
-        'amount': '1200',
-        'currency': 'USD',
+        'amount': total,
+        'currency': currency,
         'payment_method_types[]': 'card'
       };
 
