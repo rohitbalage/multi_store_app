@@ -56,6 +56,8 @@ dependencies:
   percent_indicator: ^4.2.2
   simple_circular_progress_bar: ^1.0.2
   flutter_datetime_picker: ^1.5.1
+  flutter_stripe: ^6.0.0
+  http: ^0.13.5
   
 
  

@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:multi_store_app/providers/stripe_id.dart';
 
 import 'package:multi_store_app/widgets/appbar_widgets.dart';
 
@@ -11,6 +14,8 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../providers/cart_provider.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -318,7 +323,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ),
                                     ));
                           } else if (selectedValue == 2) {
-                            print('Visa');
+                            makePayment();
                           } else if (selectedValue == 3) {
                             print('Paypal');
                           }
@@ -334,5 +339,59 @@ class _PaymentScreenState extends State<PaymentScreen> {
             child: CircularProgressIndicator(),
           );
         });
+  }
+
+  Map<String, dynamic>? paymentIntentData;
+
+  void makePayment() async {
+    // createPaymentIntnet
+    //initPaymentSheet
+    //displayPaymentSheet
+
+    paymentIntentData = await createPaymentIntnet();
+    await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: paymentIntentData!['client_secret'],
+            merchantDisplayName: 'TO SALEASE'));
+
+    await displayPaymentSheet();
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance
+          .presentPaymentSheet(
+              parameters: PresentPaymentSheetParameters(
+                  clientSecret: paymentIntentData!['client_secret'],
+                  confirmPayment: true))
+          .then((value) async {
+        paymentIntentData = null;
+        print('paid');
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  createPaymentIntnet() async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': '1200',
+        'currency': 'USD',
+        'payment_method_types[]': 'card'
+      };
+
+      print(body);
+      final responce = await http.post(
+          Uri.parse('https://api.stripe.com/v1/payment_intents'),
+          body: body,
+          headers: {
+            'Authorization': 'Bearer $stripesecretKey',
+            'content_type': "application/x-www-form-urlencoded"
+          });
+      return jsonDecode(responce.body);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
