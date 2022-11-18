@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:multi_store_app/Customer_screens/customer_orders.dart';
 import 'package:multi_store_app/Customer_screens/whislist.dart';
 import 'package:multi_store_app/main_screens/cart.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 
+import '../Customer_screens/add_address.dart';
 import '../widgets/alert_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -218,11 +220,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 title: 'Phone Number'),
                             const YellowDivider(),
                             RepeatedListTile(
-                                icon: Icons.location_pin,
-                                subTitle: data['address'] == ''
-                                    ? 'example street 1, clevleand ohio'
-                                    : data['address'],
-                                title: 'Adress'),
+                              onPressed:
+                                  FirebaseAuth.instance.currentUser!.isAnonymous
+                                      ? null
+                                      : () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const AddAddress()));
+                                        },
+                              title: 'Address',
+                              icon: Icons.location_pin,
+                              subTitle: userAddress(data),
+                            )
+                            // data['address'] == ''
+                            //     ? 'example street 1, clevleand ohio'
+                            //     : data['address'],
+                            // title: 'Adress'),
                           ]),
                         ),
                       ),
@@ -288,6 +303,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
     );
   }
+}
+
+String userAddress(dynamic data) {
+  if (FirebaseAuth.instance.currentUser!.isAnonymous) {
+    return 'example: New Jersey - USA';
+  } else if (FirebaseAuth.instance.currentUser!.isAnonymous == false &&
+      data['address'] == '') {
+    return 'Set your address';
+  }
+  return data['address'];
 }
 
 class AppBackButtn {}
