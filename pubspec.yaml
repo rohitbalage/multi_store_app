@@ -58,6 +58,7 @@ dependencies:
   flutter_datetime_picker: ^1.5.1
   flutter_stripe: ^6.0.0
   http: ^0.13.5
+  country_state_city_picker: ^1.2.8
   
 
  

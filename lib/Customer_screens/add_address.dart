@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/widgets/appbar_widgets.dart';
+import 'package:multi_store_app/widgets/snackBar.dart';
 import 'package:multi_store_app/widgets/yellowbuttion.dart';
+import 'package:country_state_city_picker/country_state_city_picker.dart';
 
 class AddAddress extends StatefulWidget {
   const AddAddress({super.key});
@@ -10,88 +12,141 @@ class AddAddress extends StatefulWidget {
 }
 
 class _AddAddressState extends State<AddAddress> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
+  late String firstName;
+  late String lastName;
+  late String phone;
+  String countryValue = 'Choose Country';
+  String stateValue = 'Choose State';
+  String cityValue = 'Choose city';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.yellowAccent.shade200,
-          leading: const AppBarBackButton(),
-          title: const AppBarTitle(
-            title: 'Add Address',
-          )),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 40, 30, 40),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
+    return ScaffoldMessenger(
+      key: _scaffoldKey,
+      child: Scaffold(
+        appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.yellowAccent.shade200,
+            leading: const AppBarBackButton(),
+            title: const AppBarTitle(
+              title: 'Add Address',
+            )),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 40, 30, 40),
+            child: Form(
+              key: formKey,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.50,
-                          height: MediaQuery.of(context).size.width * 0.12,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter your first name';
+                    Column(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.50,
+                              height: MediaQuery.of(context).size.width * 0.12,
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter your first name';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  firstName = value!;
+                                },
+                                decoration: textFormDecoration.copyWith(
+                                    labelText: 'Full Name',
+                                    hintText: 'Enter your full name'),
+                              ),
+                            )),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.50,
+                              height: MediaQuery.of(context).size.width * 0.12,
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter your first name';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  lastName = value!;
+                                },
+                                decoration: textFormDecoration.copyWith(
+                                    labelText: 'Last Name',
+                                    hintText: 'Enter your last name'),
+                              ),
+                            )),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.50,
+                              height: MediaQuery.of(context).size.width * 0.12,
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter your phone';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  phone = value!;
+                                },
+                                decoration: textFormDecoration.copyWith(
+                                    labelText: 'phone',
+                                    hintText: 'Enter your Enter your phone'),
+                              ),
+                            )),
+                      ],
+                    ),
+                    SelectState(
+                      // style: TextStyle(color: Colors.red),
+                      onCountryChanged: (value) {
+                        setState(() {
+                          countryValue = value;
+                        });
+                      },
+                      onStateChanged: (value) {
+                        setState(() {
+                          stateValue = value;
+                        });
+                      },
+                      onCityChanged: (value) {
+                        setState(() {
+                          cityValue = value;
+                        });
+                      },
+                    ),
+                    Center(
+                      child: YellowButton(
+                          label: 'Set as new address',
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              if (countryValue != 'Choose Country' &&
+                                  stateValue != 'Choose State' &&
+                                  cityValue != 'Choose City') {
+                                formKey.currentState!.save();
+                              } else {
+                                myMesssageHandler.showSnackbar(
+                                    _scaffoldKey, 'please set your location');
                               }
-                              return null;
-                            },
-                            onChanged: (Value) {},
-                            decoration: textFormDecoration.copyWith(
-                                labelText: 'Full Name',
-                                hintText: 'Enter your full name'),
-                          ),
-                        )),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.50,
-                          height: MediaQuery.of(context).size.width * 0.12,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter your first name';
-                              }
-                              return null;
-                            },
-                            onChanged: (Value) {},
-                            decoration: textFormDecoration.copyWith(
-                                labelText: 'Full Name',
-                                hintText: 'Enter your full name'),
-                          ),
-                        )),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.50,
-                          height: MediaQuery.of(context).size.width * 0.12,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter your first name';
-                              }
-                              return null;
-                            },
-                            onChanged: (Value) {},
-                            decoration: textFormDecoration.copyWith(
-                                labelText: 'Full Name',
-                                hintText: 'Enter your full name'),
-                          ),
-                        )),
-                  ],
-                ),
-                Center(
-                  child: YellowButton(
-                      label: 'Set as new address',
-                      onPressed: () {},
-                      width: 0.8),
-                )
-              ]),
+                            } else {
+                              myMesssageHandler.showSnackbar(
+                                  _scaffoldKey, 'please fill all the fields');
+                            }
+                          },
+                          width: 0.8),
+                    )
+                  ]),
+            ),
+          ),
         ),
       ),
     );
