@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:multi_store_app/Customer_screens/address_book.dart';
 import 'package:multi_store_app/Customer_screens/customer_orders.dart';
 import 'package:multi_store_app/Customer_screens/whislist.dart';
 import 'package:multi_store_app/main_screens/cart.dart';
@@ -228,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const AddAddress()));
+                                                      const AddressBook()));
                                         },
                               title: 'Address',
                               icon: Icons.location_pin,
