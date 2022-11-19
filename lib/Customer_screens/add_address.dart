@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/widgets/appbar_widgets.dart';
 import 'package:multi_store_app/widgets/snackBar.dart';
 import 'package:multi_store_app/widgets/yellowbuttion.dart';
 import 'package:country_state_city_picker/country_state_city_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class AddAddress extends StatefulWidget {
   const AddAddress({super.key});
@@ -127,12 +130,29 @@ class _AddAddressState extends State<AddAddress> {
                     Center(
                       child: YellowButton(
                           label: 'Set as new address',
-                          onPressed: () {
+                          onPressed: () async {
                             if (formKey.currentState!.validate()) {
                               if (countryValue != 'Choose Country' &&
                                   stateValue != 'Choose State' &&
                                   cityValue != 'Choose City') {
                                 formKey.currentState!.save();
+
+                                CollectionReference addressRef =
+                                    FirebaseFirestore.instance
+                                        .collection('customers')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .collection('address');
+                                var addressId = Uuid().v4();
+                                await addressRef.doc(addressId).set({
+                                  'addressId': addressId,
+                                  'firstname': firstName,
+                                  'lastname': lastName,
+                                  'phone': phone,
+                                  'country': countryValue,
+                                  'state': stateValue,
+                                  'city': cityValue
+                                }).whenComplete(() => Navigator.pop(context));
                               } else {
                                 myMesssageHandler.showSnackbar(
                                     _scaffoldKey, 'please set your location');
