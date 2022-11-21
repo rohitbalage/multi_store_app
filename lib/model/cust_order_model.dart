@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -123,7 +125,7 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                         children: [
                           const Text(
                             'Delivery status: ',
-                            style: const TextStyle(fontSize: 15),
+                            style: TextStyle(fontSize: 15),
                           ),
                           Text(
                             (widget.order['deliverystatus']),
@@ -215,8 +217,63 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                                                 ),
                                                 YellowButton(
                                                     label: 'ok',
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
+                                                    onPressed: () async {
+                                                      CollectionReference
+                                                          collRef =
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'products')
+                                                              .doc(widget.order[
+                                                                  'proid'])
+                                                              .collection(
+                                                                  'reviews');
+
+                                                      await collRef
+                                                          .doc(FirebaseAuth
+                                                              .instance
+                                                              .currentUser!
+                                                              .uid)
+                                                          .set({
+                                                        'name': widget.order[
+                                                            'customername'],
+                                                        'email': widget
+                                                            .order['email'],
+                                                        'rate': rate,
+                                                        'comment': comment,
+                                                        'profileimage':
+                                                            widget.order[
+                                                                'profileimage']
+                                                      }).whenComplete(() async {
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .runTransaction(
+                                                                (transaction) async {
+                                                          DocumentReference
+                                                              documentReference =
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'orders')
+                                                                  .doc(widget
+                                                                          .order[
+                                                                      'orderid']);
+
+                                                          await transaction.update(
+                                                              documentReference,
+                                                              {
+                                                                'orderreview':
+                                                                    true
+                                                              });
+                                                          await Future.delayed(
+                                                                  const Duration(
+                                                                      microseconds:
+                                                                          100))
+                                                              .whenComplete(() =>
+                                                                  Navigator.pop(
+                                                                      context));
+                                                        });
+                                                      });
                                                     },
                                                     width: 0.3)
                                               ],
@@ -226,13 +283,16 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                                   ),
                                 );
                               },
-                              child: const Text('write review'))
+                              child: const Text('Write Review'))
                           : const Text(''),
                       widget.order['deliverystatus'] == 'delivered' &&
-                              widget.order['orderreview'] == false
+                              widget.order['orderreview'] == true
                           ? Row(
                               children: const [
-                                Icon(Icons.check, color: Colors.blue),
+                                Icon(
+                                  Icons.check,
+                                  color: Colors.blue,
+                                ),
                                 Text(
                                   'Review Added',
                                   style: TextStyle(
@@ -241,7 +301,7 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                                 )
                               ],
                             )
-                          : const Text(''),
+                          : const Text('')
                     ]),
               ),
             )
