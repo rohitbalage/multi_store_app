@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:badges/badges.dart';
+import 'package:expandable/expandable.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final dynamic prolist;
@@ -30,6 +31,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       .collection('products')
       .where('maincateg', isEqualTo: widget.prolist['maincateg'])
       .where('subcateg', isEqualTo: widget.prolist['subcateg'])
+      .snapshots();
+
+  late final Stream<QuerySnapshot> reviewsStream = FirebaseFirestore.instance
+      .collection('products')
+      .doc(widget.prolist['proid'])
+      .collection('reviews')
       .snapshots();
 
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
@@ -217,8 +224,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         fontWeight: FontWeight.w600,
                         color: Colors.blueGrey.shade600),
                   ),
+                  reviews(reviewsStream),
                   const ProductDetailHeader(
-                    label: ' Recommended ',
+                    label: ' Recommended items ',
                   ),
                   SizedBox(
                     child: StreamBuilder<QuerySnapshot>(
@@ -374,7 +382,7 @@ class ProductDetailHeader extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.red, fontSize: 24, fontWeight: FontWeight.w600),
         ),
         const SizedBox(
@@ -388,4 +396,56 @@ class ProductDetailHeader extends StatelessWidget {
       ]),
     );
   }
+}
+
+Widget reviews(var reviewsStream) {
+  return ExpandablePanel(
+      header: const Padding(
+        padding: EdgeInsets.all(10),
+        child: Text(
+          'Reviews',
+          style: TextStyle(
+              color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      ),
+      collapsed: const Text('collapsed'),
+      expanded: reviewsAll(reviewsStream));
+}
+
+Widget reviewsAll(var reviewsStream) {
+  return StreamBuilder<QuerySnapshot>(
+    stream: reviewsStream,
+    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot2) {
+      if (snapshot2.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      if (snapshot2.data!.docs.isEmpty) {
+        return const Center(
+            child: Text(
+          'This product  \n\n has no reviews yet',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 26,
+              color: Colors.blueGrey,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Acme',
+              letterSpacing: 1.5),
+        ));
+      }
+
+      return ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: snapshot2.data!.docs.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundImage:
+                    NetworkImage(snapshot2.data!.docs[index]['profileimage']),
+              ),
+            );
+          });
+    },
+  );
 }

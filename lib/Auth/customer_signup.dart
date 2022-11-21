@@ -1,14 +1,17 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../widgets/auth_widgets.dart';
-import '../widgets/snackBar.dart';
+import 'package:multi_store_app/widgets/auth_widgets.dart';
+import 'package:multi_store_app/widgets/snackbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class CustomerRegister extends StatefulWidget {
-  const CustomerRegister({super.key});
+  const CustomerRegister({Key? key}) : super(key: key);
 
   @override
   _CustomerRegisterState createState() => _CustomerRegisterState();
@@ -24,8 +27,8 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
-
   bool passwordVisible = false;
+
   final ImagePicker _picker = ImagePicker();
 
   XFile? _imageFile;
@@ -38,6 +41,24 @@ class _CustomerRegisterState extends State<CustomerRegister> {
     try {
       final pickedImage = await _picker.pickImage(
           source: ImageSource.camera,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: 95);
+      setState(() {
+        _imageFile = pickedImage;
+      });
+    } catch (e) {
+      setState(() {
+        _pickedImageError = e;
+      });
+      print(_pickedImageError);
+    }
+  }
+
+  void _pickImageFromGallery() async {
+    try {
+      final pickedImage = await _picker.pickImage(
+          source: ImageSource.gallery,
           maxHeight: 300,
           maxWidth: 300,
           imageQuality: 95);
@@ -76,9 +97,8 @@ class _CustomerRegisterState extends State<CustomerRegister> {
             'profileimage': profileImage,
             'phone': '',
             'address': '',
-            'cid': _uid,
+            'cid': _uid
           });
-
           _formKey.currentState!.reset();
           setState(() {
             _imageFile = null;
@@ -91,45 +111,26 @@ class _CustomerRegisterState extends State<CustomerRegister> {
               processing = false;
             });
             myMesssageHandler.showSnackbar(
-                _scaffoldKey, 'that is a weak password');
+                _scaffoldKey, 'The password provided is too weak.');
           } else if (e.code == 'email-already-in-use') {
             setState(() {
               processing = false;
             });
             myMesssageHandler.showSnackbar(
-                _scaffoldKey, 'that email is already used by another user');
+                _scaffoldKey, 'The account already exists for that email.');
           }
         }
       } else {
         setState(() {
           processing = false;
         });
-        myMesssageHandler.showSnackbar(
-            _scaffoldKey, 'Please pick up image first');
+        myMesssageHandler.showSnackbar(_scaffoldKey, 'please pick image first');
       }
     } else {
       setState(() {
         processing = false;
       });
-      myMesssageHandler.showSnackbar(_scaffoldKey, 'Please fill all fields');
-    }
-  }
-
-  void _pickImageFromGallery() async {
-    try {
-      final pickedImage = await _picker.pickImage(
-          source: ImageSource.gallery,
-          maxHeight: 300,
-          maxWidth: 300,
-          imageQuality: 95);
-      setState(() {
-        _imageFile = pickedImage;
-      });
-    } catch (e) {
-      setState(() {
-        _pickedImageError = e;
-      });
-      print(_pickedImageError);
+      myMesssageHandler.showSnackbar(_scaffoldKey, 'please fill all fields');
     }
   }
 
@@ -149,9 +150,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      const AuthHeaderLabel(
-                        headerLabel: 'Sign Up',
-                      ),
+                      const AuthHeaderLabel(headerLabel: 'Sign Up'),
                       Row(
                         children: [
                           Padding(
@@ -207,75 +206,83 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                         ],
                       ),
                       Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter your full name';
-                              }
-                              return null;
-                            },
-                            onChanged: (Value) {
-                              name = Value;
-                            },
-                            // controller: _nameController,
-                            decoration: textFormDecoration.copyWith(
-                                labelText: 'Full Name',
-                                hintText: 'Enter your full name'),
-                          )),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your full name';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            name = value;
+                          },
+                          //    controller: _namecontroller,
+                          decoration: textFormDecoration.copyWith(
+                            labelText: 'Full Name',
+                            hintText: 'Enter your Full Name',
+                          ),
+                        ),
+                      ),
                       Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter your email';
-                              } else if (value.isValidEmail() == false) {
-                                return 'invalid email';
-                              } else if (value.isValidEmail() == true) {
-                                return null;
-                              }
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your email ';
+                            } else if (value.isValidEmail() == false) {
+                              return 'invalid email';
+                            } else if (value.isValidEmail() == true) {
                               return null;
-                            },
-                            onChanged: (Value) {
-                              email = Value;
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: textFormDecoration.copyWith(
-                                labelText: 'Email Address',
-                                hintText: 'Enter your email'),
-                          )),
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            email = value;
+                          },
+                          //  controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: textFormDecoration.copyWith(
+                            labelText: 'Email Address',
+                            hintText: 'Enter your email',
+                          ),
+                        ),
+                      ),
                       Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: TextFormField(
-                            onChanged: (Value) {
-                              password = Value;
-                            },
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'please enter your password';
-                              }
-                              return null;
-                            },
-                            obscureText: passwordVisible,
-                            decoration: textFormDecoration.copyWith(
-                                labelText: 'Password',
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        passwordVisible = !passwordVisible;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      passwordVisible
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                      color: Colors.purple,
-                                    )),
-                                hintText: 'Enter your password'),
-                          )),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your password';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            password = value;
+                          },
+                          //   controller: _passwordController,
+                          obscureText: passwordVisible,
+                          decoration: textFormDecoration.copyWith(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                                icon: Icon(
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.purple,
+                                )),
+                            labelText: 'Password',
+                            hintText: 'Enter your password',
+                          ),
+                        ),
+                      ),
                       HaveAccount(
-                        haveAccount: 'already have an account?',
-                        actionLabel: 'log In',
+                        haveAccount: 'already have account? ',
+                        actionLabel: 'Log In',
                         onPressed: () {
                           Navigator.pushReplacementNamed(
                               context, '/customer_login');
@@ -287,10 +294,10 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                             )
                           : AuthMainButton(
                               mainButtonLabel: 'Sign Up',
-                              onPressed: () async {
+                              onPressed: () {
                                 signUp();
                               },
-                            )
+                            ),
                     ],
                   ),
                 ),
