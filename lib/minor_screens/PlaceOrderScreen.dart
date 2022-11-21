@@ -1,19 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_store_app/main_screens/profile.dart';
 import 'package:multi_store_app/minor_screens/payment_screen.dart';
+import 'package:multi_store_app/providers/cart_provider.dart';
 import 'package:multi_store_app/widgets/appbar_widgets.dart';
 import 'package:multi_store_app/widgets/yellowbuttion.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/cart_provider.dart';
-
 class PlaceOrderScreen extends StatefulWidget {
-  const PlaceOrderScreen({super.key});
+  const PlaceOrderScreen({Key? key}) : super(key: key);
 
   @override
-  State<PlaceOrderScreen> createState() => _PlaceOrderScreenState();
+  _PlaceOrderScreenState createState() => _PlaceOrderScreenState();
 }
 
 class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
@@ -36,8 +34,9 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Material(
-              child: Center(child: CircularProgressIndicator()),
-            );
+                child: Center(
+              child: CircularProgressIndicator(),
+            ));
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
@@ -52,91 +51,84 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                     elevation: 0,
                     backgroundColor: Colors.grey.shade200,
                     leading: const AppBarBackButton(),
-                    title: const AppBarTitle(title: 'Place Order'),
+                    title: const AppBarTitle(
+                      title: 'Place Order',
+                    ),
                   ),
                   body: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 60),
-                    child: Column(children: [
-                      Container(
-                        height: 90,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 16),
-                          child: Column(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 90,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 16),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text('Name: ${data['name']}'),
                                 Text('Phone: ${data['phone']}'),
-                                Text('Address: ${data['address']}')
-                              ]),
+                                Text('Address: ${data['address']}'),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15)),
-                          child:
-                              Consumer<Cart>(builder: (context, cart, child) {
-                            return ListView.builder(
-                                itemCount: cart.count,
-                                itemBuilder: (context, index) {
-                                  final order = cart.getItems[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Container(
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(width: 0.3),
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: Row(children: [
-                                        ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(15),
-                                              bottomLeft: Radius.circular(15)),
-                                          child: SizedBox(
-                                              height: 100,
-                                              width: 100,
-                                              child: Image.network(
-                                                  order.imagesUrl.first)),
-                                        ),
-                                        Flexible(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Consumer<Cart>(
+                              builder: (context, cart, child) {
+                                return ListView.builder(
+                                    itemCount: cart.count,
+                                    itemBuilder: (context, index) {
+                                      final order = cart.getItems[index];
+                                      return Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Container(
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(width: 0.3),
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: Row(
                                             children: [
-                                              Text(
-                                                order.name,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
-                                                    color:
-                                                        Colors.grey.shade600),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 4,
-                                                        horizontal: 12),
-                                                child: Row(
+                                              ClipRRect(
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  15),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  15)),
+                                                  child: SizedBox(
+                                                    height: 100,
+                                                    width: 100,
+                                                    child: Image.network(
+                                                        order.imagesUrl.first),
+                                                  )),
+                                              Flexible(
+                                                child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
-                                                          .spaceBetween,
+                                                          .spaceAround,
                                                   children: [
                                                     Text(
-                                                      order.price
-                                                          .toStringAsFixed(2),
+                                                      order.name,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                           fontSize: 16,
                                                           fontWeight:
@@ -144,29 +136,57 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                                           color: Colors
                                                               .grey.shade600),
                                                     ),
-                                                    Text(
-                                                      'x ${order.qty.toString()}',
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors
-                                                              .grey.shade600),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 4,
+                                                          horizontal: 12),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            order.price
+                                                                .toStringAsFixed(
+                                                                    2),
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade600),
+                                                          ),
+                                                          Text(
+                                                            'x ${order.qty.toString()}',
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade600),
+                                                          )
+                                                        ],
+                                                      ),
                                                     )
                                                   ],
                                                 ),
                                               )
                                             ],
                                           ),
-                                        )
-                                      ]),
-                                    ),
-                                  );
-                                });
-                          }),
+                                        ),
+                                      );
+                                    });
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                    ]),
+                      ],
+                    ),
                   ),
                   bottomSheet: Container(
                     color: Colors.grey.shade200,
