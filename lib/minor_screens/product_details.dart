@@ -224,7 +224,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         fontWeight: FontWeight.w600,
                         color: Colors.blueGrey.shade600),
                   ),
-                  reviews(reviewsStream),
+                  Stack(children: [
+                    Positioned(right: 50, top: 15, child: Text('total')),
+                    ExpandableTheme(
+                        data: const ExpandableThemeData(
+                          iconColor: Colors.blue,
+                          iconSize: 30,
+                        ),
+                        child: reviews(reviewsStream)),
+                  ]),
                   const ProductDetailHeader(
                     label: ' Recommended items ',
                   ),
@@ -408,7 +416,10 @@ Widget reviews(var reviewsStream) {
               color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
-      collapsed: const Text('collapsed'),
+      collapsed: SizedBox(
+        height: 230,
+        child: reviewsAll(reviewsStream),
+      ),
       expanded: reviewsAll(reviewsStream));
 }
 
@@ -444,6 +455,22 @@ Widget reviewsAll(var reviewsStream) {
                 backgroundImage:
                     NetworkImage(snapshot2.data!.docs[index]['profileimage']),
               ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(snapshot2.data!.docs[index]['name']),
+                  Row(
+                    children: [
+                      Text(snapshot2.data!.docs[index]['rate'].toString()),
+                      const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      )
+                    ],
+                  )
+                ],
+              ),
+              subtitle: Text(snapshot2.data!.docs[index]['comment']),
             );
           });
     },
