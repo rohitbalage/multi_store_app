@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_store_app/minor_screens/edit_Store.dart';
 import 'package:multi_store_app/model/product_model.dart';
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
@@ -104,7 +105,14 @@ class _VisitStoreState extends State<VisitStore> {
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               child: MaterialButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => EditStore(
+                                                  data: data,
+                                                )));
+                                  },
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,

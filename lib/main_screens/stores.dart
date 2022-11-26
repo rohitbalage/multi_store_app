@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_store_app/main_screens/visit_store.dart';
+import 'package:multi_store_app/minor_screens/visit_store.dart';
 import '../widgets/appbar_Widgets.dart';
 
 class StoresScreen extends StatelessWidget {

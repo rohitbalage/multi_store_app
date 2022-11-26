@@ -6,9 +6,10 @@ import 'package:multi_store_app/dashboard_components/manage_products.dart';
 import 'package:multi_store_app/dashboard_components/supp_balance.dart';
 import 'package:multi_store_app/dashboard_components/supp_orders.dart';
 import 'package:multi_store_app/dashboard_components/supp_statics.dart';
-import 'package:multi_store_app/main_screens/visit_store.dart';
+
 import 'package:multi_store_app/widgets/appbar_Widgets.dart';
 
+import '../minor_screens/visit_store.dart';
 import '../widgets/alert_dialog.dart';
 
 List<IconData> icons = [
