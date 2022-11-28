@@ -17,6 +17,7 @@ import 'package:collection/collection.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:badges/badges.dart';
 import 'package:expandable/expandable.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final dynamic prolist;
@@ -99,12 +100,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: CircleAvatar(
                               backgroundColor: Colors.yellow,
                               child: IconButton(
-                                icon: const Icon(
-                                  Icons.share,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {},
-                              ),
+                                  icon: const Icon(
+                                    Icons.share,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () async {
+                                    await Share.share('this is a share',
+                                        subject: 'This is new subject');
+                                  }),
                             ))
                       ],
                     ),
