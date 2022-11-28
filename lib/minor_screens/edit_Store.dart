@@ -26,6 +26,7 @@ class _EditStoreState extends State<EditStore> {
   late String phone;
   late String storeLogo;
   late String coverImage;
+  bool processing = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -105,6 +106,10 @@ class _EditStoreState extends State<EditStore> {
     if (formKey.currentState!.validate()) {
       //continue
       formKey.currentState!.save();
+
+      setState(() {
+        processing = true;
+      });
       await uploadStorelogo().whenComplete(() async =>
           await uploadCoverImage().whenComplete(() => editStoreData()));
     } else {
@@ -305,13 +310,21 @@ class _EditStoreState extends State<EditStore> {
                       },
                       width: 0.25,
                     ),
-                    YellowButton(
-                      label: 'save changes',
-                      onPressed: () {
-                        saveChanges();
-                      },
-                      width: 0.5,
-                    )
+                    processing == true
+                        ? YellowButton(
+                            label: 'please wait...',
+                            onPressed: () {
+                              null;
+                            },
+                            width: 0.5,
+                          )
+                        : YellowButton(
+                            label: 'save changes',
+                            onPressed: () {
+                              saveChanges();
+                            },
+                            width: 0.5,
+                          )
                   ],
                 ),
               )
