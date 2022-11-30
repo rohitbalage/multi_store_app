@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expandable/expandable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -189,302 +190,359 @@ class _EditProductState extends State<EditProduct> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return ScaffoldMessenger(
-      key: _scaffoldKey,
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            reverse: false,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(children: [
-                    Container(
-                        color: Colors.blueGrey.shade100,
-                        height: size.width * 0.5,
-                        width: size.width * 0.5,
-                        child: previewCurrentImages()),
-                    SizedBox(
-                      height: size.width * 0.5,
-                      width: size.width * 0.5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              const Text(
-                                'main category',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(6),
-                                margin: const EdgeInsets.all(6),
-                                constraints:
-                                    BoxConstraints(maxWidth: size.width * 0.3),
-                                decoration: BoxDecoration(
-                                    color: Colors.yellow,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Center(
-                                    child: Text(widget.items['maincateg'])),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              const Text(
-                                'subcategory',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(6),
-                                margin: const EdgeInsets.all(6),
-                                constraints:
-                                    BoxConstraints(maxWidth: size.width * 0.3),
-                                decoration: BoxDecoration(
-                                    color: Colors.yellow,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Center(
-                                    child: Text(widget.items['subcateg'])),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
-                  ]),
-                  Row(children: [
-                    Container(
-                      color: Colors.blueGrey.shade100,
-                      height: size.width * 0.5,
-                      width: size.width * 0.5,
-                      child: imagesFileList != null
-                          ? previewImages()
-                          : const Center(
-                              child: Text(
-                                  'you have not \n \n picked images yet !',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 16)),
-                            ),
-                    ),
-                    SizedBox(
-                      height: size.width * 0.5,
-                      width: size.width * 0.5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              const Text(
-                                '* select main category',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              DropdownButton(
-                                  iconSize: 40,
-                                  iconEnabledColor: Colors.red,
-                                  dropdownColor: Colors.yellow.shade400,
-                                  value: mainCategValue,
-                                  items: maincateg
-                                      .map<DropdownMenuItem<String>>((value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? value) {
-                                    selectedMainCateg(value);
-                                  }),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              const Text(
-                                '* select subcategory',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              DropdownButton(
-                                  iconSize: 40,
-                                  iconEnabledColor: Colors.red,
-                                  iconDisabledColor: Colors.black,
-                                  dropdownColor: Colors.yellow.shade400,
-                                  menuMaxHeight: 500,
-                                  disabledHint: const Text('select category'),
-                                  value: subCategValue,
-                                  items: subCategList
-                                      .map<DropdownMenuItem<String>>((value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? value) {
-                                    print(value);
-                                    setState(() {
-                                      subCategValue = value!;
-                                    });
-                                  })
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
-                  ]),
-                  const SizedBox(
-                    height: 30,
-                    child: Divider(
-                      color: Colors.yellow,
-                      thickness: 1.5,
-                    ),
-                  ),
-                  Row(
+        key: _scaffoldKey,
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              reverse: false,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Column(
+                        children: [
+                          Row(children: [
+                            Container(
+                                color: Colors.blueGrey.shade100,
+                                height: size.width * 0.5,
+                                width: size.width * 0.5,
+                                child: previewCurrentImages()),
+                            SizedBox(
+                              height: size.width * 0.5,
+                              width: size.width * 0.5,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      const Text(
+                                        'main category',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.all(6),
+                                        margin: const EdgeInsets.all(6),
+                                        constraints: BoxConstraints(
+                                            maxWidth: size.width * 0.3),
+                                        decoration: BoxDecoration(
+                                            color: Colors.yellow,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Center(
+                                            child: Text(
+                                                widget.items['maincateg'])),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      const Text(
+                                        'subcategory',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.all(6),
+                                        margin: const EdgeInsets.all(6),
+                                        constraints: BoxConstraints(
+                                            maxWidth: size.width * 0.3),
+                                        decoration: BoxDecoration(
+                                            color: Colors.yellow,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Center(
+                                            child:
+                                                Text(widget.items['subcateg'])),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ]),
+                          ExpandablePanel(
+                            // theme: const ExpandableThemeData(hasIcon: false),
+                            header: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.yellow.shade400,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.all(6),
+                                child: const Center(
+                                  child: Text(
+                                    'Change Images & Categories',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            collapsed: const SizedBox(),
+                            expanded: changeImages(size),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                        child: Divider(
+                          color: Colors.yellow,
+                          thickness: 1.5,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.38,
+                              child: TextFormField(
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please enter price';
+                                    } else if (value.isValidPrice() != true) {
+                                      return 'invalid price';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    price = double.parse(value!);
+                                  },
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal: true),
+                                  decoration: textFormDecoration.copyWith(
+                                    labelText: 'price',
+                                    hintText: 'price .. \$',
+                                  )),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.38,
+                              child: TextFormField(
+                                  initialValue: '0',
+                                  maxLength: 2,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return null;
+                                    } else if (value.isValidDiscount() !=
+                                        true) {
+                                      return 'invalid discount';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (String? value) {
+                                    discount = int.parse(value!);
+                                  },
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(
+                                          decimal: true),
+                                  decoration: textFormDecoration.copyWith(
+                                    labelText: 'discount',
+                                    hintText: 'discount .. %',
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.38,
+                          width: MediaQuery.of(context).size.width * 0.45,
                           child: TextFormField(
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'please enter price';
-                                } else if (value.isValidPrice() != true) {
-                                  return 'invalid price';
+                                  return 'please enter Quantity';
+                                } else if (value.isValidQuantity() != true) {
+                                  return 'not valid quantity';
                                 }
                                 return null;
                               },
                               onSaved: (value) {
-                                price = double.parse(value!);
+                                quantity = int.parse(value!);
                               },
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
+                              keyboardType: TextInputType.number,
                               decoration: textFormDecoration.copyWith(
-                                labelText: 'price',
-                                hintText: 'price .. \$',
+                                labelText: 'Quantity',
+                                hintText: 'Add Quantity',
                               )),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.38,
+                          width: MediaQuery.of(context).size.width,
                           child: TextFormField(
-                              initialValue: '0',
-                              maxLength: 2,
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return null;
-                                } else if (value.isValidDiscount() != true) {
-                                  return 'invalid discount';
+                                  return 'please enter product name';
                                 }
                                 return null;
                               },
-                              onSaved: (String? value) {
-                                discount = int.parse(value!);
+                              onSaved: (value) {
+                                proName = value!;
                               },
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                      decimal: true),
+                              maxLength: 100,
+                              maxLines: 3,
                               decoration: textFormDecoration.copyWith(
-                                labelText: 'discount',
-                                hintText: 'discount .. %',
+                                labelText: 'product name',
+                                hintText: 'Enter product name',
                               )),
                         ),
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'please enter Quantity';
-                            } else if (value.isValidQuantity() != true) {
-                              return 'not valid quantity';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            quantity = int.parse(value!);
-                          },
-                          keyboardType: TextInputType.number,
-                          decoration: textFormDecoration.copyWith(
-                            labelText: 'Quantity',
-                            hintText: 'Add Quantity',
-                          )),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'please enter product name';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            proName = value!;
-                          },
-                          maxLength: 100,
-                          maxLines: 3,
-                          decoration: textFormDecoration.copyWith(
-                            labelText: 'product name',
-                            hintText: 'Enter product name',
-                          )),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'please enter product description';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            proDesc = value!;
-                          },
-                          maxLength: 800,
-                          maxLines: 5,
-                          decoration: textFormDecoration.copyWith(
-                            labelText: 'product description',
-                            hintText: 'Enter product description',
-                          )),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      YellowButton(
-                          label: 'Cancle',
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          width: 0.25),
-                      YellowButton(
-                          label: 'Save the changess',
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          width: 0.5)
-                    ],
-                  )
-                ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'please enter product description';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                proDesc = value!;
+                              },
+                              maxLength: 800,
+                              maxLines: 5,
+                              decoration: textFormDecoration.copyWith(
+                                labelText: 'product description',
+                                hintText: 'Enter product description',
+                              )),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          YellowButton(
+                              label: 'Cancle',
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              width: 0.25),
+                          YellowButton(
+                              label: 'Save the changess',
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              width: 0.5)
+                        ],
+                      )
+                    ]),
               ),
             ),
           ),
-        ),
-      ),
+        ));
+  }
+
+  Widget changeImages(Size size) {
+    return Column(
+      children: [
+        Row(children: [
+          Container(
+            color: Colors.blueGrey.shade100,
+            height: size.width * 0.5,
+            width: size.width * 0.5,
+            child: imagesFileList != null
+                ? previewImages()
+                : const Center(
+                    child: Text('you have not \n \n picked images yet !',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16)),
+                  ),
+          ),
+          SizedBox(
+            height: size.width * 0.5,
+            width: size.width * 0.5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    const Text(
+                      '* select main category',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    DropdownButton(
+                        iconSize: 40,
+                        iconEnabledColor: Colors.red,
+                        dropdownColor: Colors.yellow.shade400,
+                        value: mainCategValue,
+                        items: maincateg.map<DropdownMenuItem<String>>((value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          selectedMainCateg(value);
+                        }),
+                  ],
+                ),
+                Column(
+                  children: [
+                    const Text(
+                      '* select subcategory',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    DropdownButton(
+                        iconSize: 40,
+                        iconEnabledColor: Colors.red,
+                        iconDisabledColor: Colors.black,
+                        dropdownColor: Colors.yellow.shade400,
+                        menuMaxHeight: 500,
+                        disabledHint: const Text('select category'),
+                        value: subCategValue,
+                        items:
+                            subCategList.map<DropdownMenuItem<String>>((value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          print(value);
+                          setState(() {
+                            subCategValue = value!;
+                          });
+                        })
+                  ],
+                ),
+              ],
+            ),
+          )
+        ]),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: imagesFileList!.isNotEmpty
+              ? YellowButton(
+                  label: 'Reset Images',
+                  onPressed: () {
+                    setState(() {
+                      imagesFileList = [];
+                    });
+                  },
+                  width: 0.6,
+                )
+              : YellowButton(
+                  label: 'Change Images',
+                  onPressed: () {
+                    pickProductImages();
+                  },
+                  width: 0.6,
+                ),
+        )
+      ],
     );
   }
 }
