@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_store_app/utilities/categ_list.dart';
 import 'package:multi_store_app/widgets/appbar_widgets.dart';
+import 'package:multi_store_app/widgets/pink_button.dart';
 import 'package:multi_store_app/widgets/snackbar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:multi_store_app/widgets/yellowbuttion.dart';
@@ -42,7 +43,7 @@ class _EditProductState extends State<EditProduct> {
   final ImagePicker _picker = ImagePicker();
 
   List<XFile>? imagesFileList = [];
-  List<String> imagesUrlList = [];
+  List<dynamic> imagesUrlList = [];
   dynamic _pickedImageError;
 
   void pickProductImages() async {
@@ -481,21 +482,41 @@ class _EditProductState extends State<EditProduct> {
                               )),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      Column(
                         children: [
-                          YellowButton(
-                              label: 'Cancle',
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              width: 0.25),
-                          YellowButton(
-                              label: 'Save the changess',
-                              onPressed: () {
-                                saveChanges();
-                              },
-                              width: 0.5)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              YellowButton(
+                                  label: 'Cancle',
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  width: 0.25),
+                              YellowButton(
+                                  label: 'Save the changess',
+                                  onPressed: () {
+                                    saveChanges();
+                                  },
+                                  width: 0.5),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: PinkButton(
+                                label: 'Delete item',
+                                onPressed: () async {
+                                  await FirebaseFirestore.instance
+                                      .runTransaction((transaction) async {
+                                    DocumentReference documentReference =
+                                        FirebaseFirestore.instance
+                                            .collection('products')
+                                            .doc(widget.items['proid']);
+                                    transaction.delete(documentReference);
+                                  }).whenComplete(() => Navigator.pop(context));
+                                },
+                                width: 0.7),
+                          )
                         ],
                       )
                     ]),
