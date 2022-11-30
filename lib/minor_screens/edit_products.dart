@@ -303,6 +303,8 @@ class _EditProductState extends State<EditProduct> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.38,
                               child: TextFormField(
+                                  initialValue:
+                                      widget.items['price'].toStringAsFixed(2),
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'please enter price';
@@ -328,7 +330,8 @@ class _EditProductState extends State<EditProduct> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.38,
                               child: TextFormField(
-                                  initialValue: '0',
+                                  initialValue:
+                                      widget.items['discount'].toString(),
                                   maxLength: 2,
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -358,6 +361,7 @@ class _EditProductState extends State<EditProduct> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.45,
                           child: TextFormField(
+                              initialValue: widget.items['instock'].toString(),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'please enter Quantity';
@@ -381,6 +385,7 @@ class _EditProductState extends State<EditProduct> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: TextFormField(
+                              initialValue: widget.items['proname'],
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'please enter product name';
@@ -403,6 +408,7 @@ class _EditProductState extends State<EditProduct> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: TextFormField(
+                              initialValue: widget.items['prodesc'],
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'please enter product description';
