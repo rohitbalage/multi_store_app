@@ -113,78 +113,133 @@ class _EditProductState extends State<EditProduct> {
     });
   }
 
-  Future<void> uploadImages() async {
-    if (mainCategValue != 'select category' && subCategValue != 'subcategory') {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-        if (imagesFileList!.isNotEmpty) {
-          setState(() {
-            processing = true;
-          });
-          try {
-            for (var image in imagesFileList!) {
-              firebase_storage.Reference ref = firebase_storage
-                  .FirebaseStorage.instance
-                  .ref('products/${path.basename(image.path)}');
+  // Future<void> uploadImages() async {
+  //   if (mainCategValue != 'select category' && subCategValue != 'subcategory') {
+  //     if (_formKey.currentState!.validate()) {
+  //       _formKey.currentState!.save();
+  //       if (imagesFileList!.isNotEmpty) {
+  //         setState(() {
+  //           processing = true;
+  //         });
+  //         try {
+  //           for (var image in imagesFileList!) {
+  //             firebase_storage.Reference ref = firebase_storage
+  //                 .FirebaseStorage.instance
+  //                 .ref('products/${path.basename(image.path)}');
 
-              await ref.putFile(File(image.path)).whenComplete(() async {
-                await ref.getDownloadURL().then((value) {
-                  imagesUrlList.add(value);
-                });
+  //             await ref.putFile(File(image.path)).whenComplete(() async {
+  //               await ref.getDownloadURL().then((value) {
+  //                 imagesUrlList.add(value);
+  //               });
+  //             });
+  //           }
+  //         } catch (e) {
+  //           print(e);
+  //         }
+  //       } else {
+  //         myMesssageHandler.showSnackbar(
+  //             _scaffoldKey, 'please pick images first');
+  //       }
+  //     } else {
+  //       myMesssageHandler.showSnackbar(_scaffoldKey, 'please fill all fields');
+  //     }
+  //   } else {
+  //     myMesssageHandler.showSnackbar(_scaffoldKey, 'please select categories');
+  //   }
+  // }
+
+  Future uploadSelectedImages() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+    } else {
+      myMesssageHandler.showSnackbar(_scaffoldKey, 'please fill all fields');
+    }
+    if (imagesFileList!.isNotEmpty) {
+      if (mainCategValue != 'select category' &&
+          subCategValue != 'subcategory') {
+        try {
+          for (var image in imagesFileList!) {
+            firebase_storage.Reference ref = firebase_storage
+                .FirebaseStorage.instance
+                .ref('products/${path.basename(image.path)}');
+
+            await ref.putFile(File(image.path)).whenComplete(() async {
+              await ref.getDownloadURL().then((value) {
+                imagesUrlList.add(value);
               });
-            }
-          } catch (e) {
-            print(e);
+            });
           }
-        } else {
-          myMesssageHandler.showSnackbar(
-              _scaffoldKey, 'please pick images first');
+        } catch (e) {
+          print(e);
         }
       } else {
-        myMesssageHandler.showSnackbar(_scaffoldKey, 'please fill all fields');
+        myMesssageHandler.showSnackbar(
+            _scaffoldKey, 'please select categories');
       }
     } else {
-      myMesssageHandler.showSnackbar(_scaffoldKey, 'please select categories');
+      imagesUrlList = widget.items['proimages'];
     }
   }
 
-  void uploadData() async {
-    if (imagesUrlList.isNotEmpty) {
-      CollectionReference productRef =
-          FirebaseFirestore.instance.collection('products');
-
-      proId = const Uuid().v4();
-
-      await productRef.doc(proId).set({
-        'proid': proId,
+  editProductData() async {
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentReference documentReference = FirebaseFirestore.instance
+          .collection('products')
+          .doc(widget.items['proid']);
+      transaction.update(documentReference, {
         'maincateg': mainCategValue,
         'subcateg': subCategValue,
         'price': price,
         'instock': quantity,
         'proname': proName,
         'prodesc': proDesc,
-        'sid': FirebaseAuth.instance.currentUser!.uid,
         'proimages': imagesUrlList,
         'discount': discount,
-      }).whenComplete(() {
-        setState(() {
-          processing = false;
-          imagesFileList = [];
-          mainCategValue = 'select category';
-
-          subCategList = [];
-          imagesUrlList = [];
-        });
-        //   _formKey.currentState!.reset();
       });
-    } else {
-      print('no images');
-    }
+    }).whenComplete(() => Navigator.pop(context));
   }
 
-  void uploadProduct() async {
-    await uploadImages().whenComplete(() => uploadData());
+  saveChanges() async {
+    await uploadSelectedImages().whenComplete(() => editProductData());
   }
+
+  // void uploadData() async {
+  //   if (imagesUrlList.isNotEmpty) {
+  //     CollectionReference productRef =
+  //         FirebaseFirestore.instance.collection('products');
+
+  //     proId = const Uuid().v4();
+
+  //     await productRef.doc(proId).set({
+  //       'proid': proId,
+  //       'maincateg': mainCategValue,
+  //       'subcateg': subCategValue,
+  //       'price': price,
+  //       'instock': quantity,
+  //       'proname': proName,
+  //       'prodesc': proDesc,
+  //       'sid': FirebaseAuth.instance.currentUser!.uid,
+  //       'proimages': imagesUrlList,
+  //       'discount': discount,
+  //     }).whenComplete(() {
+  //       setState(() {
+  //         processing = false;
+  //         imagesFileList = [];
+  //         mainCategValue = 'select category';
+
+  //         subCategList = [];
+  //         imagesUrlList = [];
+  //       });
+  //       //   _formKey.currentState!.reset();
+  //     });
+  //   } else {
+  //     print('no images');
+  //   }
+  // }
+
+  // void uploadProduct() async {
+  //   await uploadImages().whenComplete(() => uploadData());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -438,7 +493,7 @@ class _EditProductState extends State<EditProduct> {
                           YellowButton(
                               label: 'Save the changess',
                               onPressed: () {
-                                Navigator.pop(context);
+                                saveChanges();
                               },
                               width: 0.5)
                         ],
