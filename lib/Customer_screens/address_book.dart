@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_store_app/Customer_screens/add_address.dart';
+import 'package:multi_store_app/main_screens/category.dart';
 import 'package:multi_store_app/widgets/appbar_widgets.dart';
 import 'package:multi_store_app/widgets/yellowbuttion.dart';
 
@@ -68,7 +69,7 @@ class _AddressBookState extends State<AddressBook> {
                                 .runTransaction((transaction) async {
                               DocumentReference documentReference =
                                   FirebaseFirestore.instance
-                                      .collection('customer')
+                                      .collection('customers')
                                       .doc(FirebaseAuth
                                           .instance.currentUser!.uid)
                                       .collection('address')
@@ -76,18 +77,35 @@ class _AddressBookState extends State<AddressBook> {
                               transaction.update(
                                   documentReference, {'default': false});
                             });
+
+                            await FirebaseFirestore.instance
+                                .runTransaction((transaction) async {
+                              DocumentReference documentReference =
+                                  FirebaseFirestore.instance
+                                      .collection('customers')
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                      .collection('address')
+                                      .doc(item.id);
+                              transaction
+                                  .update(documentReference, {'default': true});
+                            });
+
+                            await FirebaseFirestore.instance
+                                .runTransaction((transaction) async {
+                              DocumentReference documentReference =
+                                  FirebaseFirestore.instance
+                                      .collection('customers')
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser!.uid);
+
+                              transaction.update(documentReference, {
+                                'address':
+                                    '${customer['city']} -${customer['state']} - ${customer['country']}',
+                                'phone': customer['phone']
+                              });
+                            });
                           }
-                          await FirebaseFirestore.instance
-                              .runTransaction((transaction) async {
-                            DocumentReference documentReference =
-                                FirebaseFirestore.instance
-                                    .collection('customer')
-                                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                                    .collection('address')
-                                    .doc(customer['addressid']);
-                            transaction
-                                .update(documentReference, {'default': true});
-                          });
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
