@@ -33,9 +33,9 @@ The app targets for small communities and small markets and individual local sel
   
   ### Step-by-step instructions for setting up salease
   
-  1. Sign in to **Google Firebase** or create a new account at <https://heroku.com>
-  2. Visit [this link](https://github.com/settings/tokens/new?description=GitHub%20Readme%20Streak%20Stats) to download Flutter SDK 
-  3. Visit [this link](https://github.com/settings/tokens/new?description=GitHub%20Readme%20Streak%20Stats) to download to download Android Studio. 
+  1. Sign in to **Google Firebase** 
+  2. Visit [this link](https://docs.flutter.dev/get-started/install) to download **Flutter SDK** 
+  3. Visit [this link]https://developer.android.com/studio) to download **Android Studio.** 
   3. Pull Project from Github link
   4. Run in your emulator or phone
 
