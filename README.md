@@ -14,8 +14,19 @@ this app was made by **Rohit Balage and Harsh Gohil**.
   <img src="https://github.com/devicons/devicon/blob/master/icons/photoshop/photoshop-line.svg" title="Photoshop"  alt="Gatsby" width="60" height="60"/>&nbsp;
 </div>
 
+
 ---
 
+
+## ℹ️ Devlopers Guide
+
+
+---
+
+## ℹ️ Users Guide
+
+
+---
 
 ## ℹ️ About the Project
 
