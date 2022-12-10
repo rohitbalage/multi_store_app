@@ -21,9 +21,36 @@ this app was made by **Rohit Balage and Harsh Gohil**.
 ## ℹ️ Devlopers Guide
 
 
+**How to set up a flutter enviromnet?**
+
+A Flutter environment can be set by downloading the Flutter IDE and setting up the environment variable on the PC. 
+
+
+**How to run the app?**
+
+You need the Android Studio IDE, a flutter IDE installed in your PC. you need to run the app via android emulator or a physical device attach to your PC via USB cable.
+
+
+
 ---
 
 ## ℹ️ Users Guide
+
+The app Salease is an e-commerce application. 
+
+**How to register as a customer?**
+
+You can register yourself as a customer on our platform by filling up the sign up form for a customer. A customer account then will be created on our platform. 
+
+**How to register as a Seller?**
+
+You can register yourself as a seller on our platform by filling up the sign up form for a seller. A seller account then will be created on our platform. 
+
+
+**How to place an order?**
+
+You can place an order by adding a product into a cart. then you can checkout the total price order and choose the payment method.
+
 
 
 ---
