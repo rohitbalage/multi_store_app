@@ -1,7 +1,8 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as Badge;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/material/badge.dart';
 import 'package:multi_store_app/main_screens/category.dart';
 import 'package:multi_store_app/main_screens/dashboard.dart';
 import 'package:multi_store_app/main_screens/home.dart';
@@ -63,7 +64,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScren> {
                   label: 'Stores',
                 ),
                 BottomNavigationBarItem(
-                  icon: Badge(
+                  icon: Badge.Badge(
                       showBadge: snapshot.data!.docs.isEmpty ? false : true,
                       padding: const EdgeInsets.all(2),
                       badgeColor: Colors.yellow,

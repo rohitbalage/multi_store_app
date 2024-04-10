@@ -15,7 +15,7 @@ import '../model/product_model.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as Badge;
 import 'package:expandable/expandable.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -317,7 +317,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ),
                                 ));
                           },
-                          icon: Badge(
+                          icon: Badge.Badge(
                               showBadge: context.read<Cart>().getItems.isEmpty
                                   ? false
                                   : true,
