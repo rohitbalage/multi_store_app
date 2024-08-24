@@ -2,7 +2,7 @@
 <a href="https://freeimage.host/"><img src="https://iili.io/Ho9HJcX.png" alt="Ho9HJcX.png" border="0"></a>
 
 
- his app was a project part for CIS 634 under the guidance of **Professor Youggijan Fu** in the Cleveland State university, Ohio, USA. 
+ This app was a project part for CIS 634 under the guidance of **Professor Youggijan Fu** in the Cleveland State university, Ohio, USA. 
 
 The world SALEASE comes from two words that is sales and ease. It is an ecommerse app like amazon ebay but having both parties i.e salers and customers on the same platform. This app can be useful for small market areas, cafeteria, college campus.
 this app was made by **Rohit Balage and Harsh Gohil**.
